@@ -92,8 +92,8 @@ public class PrincipalFXController {
     private void handleWindowShowing(WindowEvent event){
         try{
             LOGGER.info("handlWindowShowing --> LogOut");
-            //lblBienvenida.setText("Bienvenido "+user.getFullname());
-            //lblEmail.setText(user.getEmail());
+            lblBienvenida.setText("Bienvenido "+user.getFullname());
+            lblEmail.setText(user.getEmail());
         }catch(Exception e){
             LOGGER.severe(e.getMessage());
         }
@@ -142,5 +142,8 @@ public class PrincipalFXController {
         }catch(Exception e){
             LOGGER.severe(e.getMessage());
         }
+    }
+    public void setUser(User user){
+        this.user=user;
     }
 }
