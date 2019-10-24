@@ -96,12 +96,12 @@ public class InicioFXController extends ControladorGeneral{
             tfNombreUsuario.setText(tfNombreUsuario.getText().trim()
                     .substring(0, MAX_CARACTERES));
             showErrorAlert("Has superado el máximo tamaño de nombre de usuario"
-                    + ", 255.");
+                    + ", "+MAX_CARACTERES+".");
         }
         if(tfContra.getText().trim().length() > MAX_CARACTERES){
             tfContra.setText(tfContra.getText().trim()
                     .substring(0, MAX_CARACTERES));
-            showErrorAlert("Has superado el máximo tamaño de contraseña, 255.");
+            showErrorAlert("Has superado el máximo tamaño de contraseña, "+MAX_CARACTERES+".");
         }
     }
     /**
