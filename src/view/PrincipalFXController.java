@@ -7,7 +7,6 @@ package view;
 
 import clases.User;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -23,8 +22,8 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 /**
- * Es el controlador de la ventana principal.fxml
- *
+ * Es el controlador de la ventana principal.fxml.
+ * The controller of the principal.fxml window.
  * @author Ricardo Peinado Lastra
  */
 public class PrincipalFXController {
@@ -60,67 +59,88 @@ public class PrincipalFXController {
     @FXML
     private Label lblEmail;
     
-    /**
-     * Cierra sesión del usuario en cuestion.
-     * @param event La acción a recivir.
-     */
-    @FXML
-    private void btnLogOut(ActionEvent event){
-        /**
-         * Establece en escenario.
-         */
-    }
+    
     /**
      * Inicializa en escenario para la vista.
+     * Initialize the stage of the view.
      * @param root La vista principal.fxml ya cargada.
      */
     @FXML
     public void initStage(Parent root) {
-        
-        LOGGER.info("Iniciando la ventana LogOut");
-        Scene scene=new Scene(root);
-        stage=new Stage();
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setScene(scene);
-        stage.setTitle("Principal");
-        stage.setResizable(true);
-        //Vamos a rellenar los datos en la ventana.
-        stage.setOnShowing(this::handleWindowShowing);
-        stage.show();
-        
+        try{
+            LOGGER.info("Iniciando la ventana LogOut");
+            Scene scene=new Scene(root);
+            stage=new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(scene);
+            stage.setTitle("Principal");
+            stage.setResizable(true);
+            stage.setFullScreen(true);
+            //Vamos a rellenar los datos en la ventana.
+            stage.setOnShowing(this::handleWindowShowing);
+            stage.show();
+        }catch(Exception e){
+            LOGGER.severe(e.getMessage());
+        }
         
     }
     /**
      * Rellena los datos al enseñar la vista.
-     * @param event
+     * Load the data in the view.
+     * @param event El evento en cuestión./The current view.
      */
     private void handleWindowShowing(WindowEvent event){
-        LOGGER.info("handlWindowShowing --> LogOut");
-        
-        lblBienvenida.setText("Bienvenido "+user.getFullname());
-        lblEmail.setText(user.getEmail());
+        try{
+            LOGGER.info("handlWindowShowing --> LogOut");
+            lblBienvenida.setText("Bienvenido "+user.getFullname());
+            lblEmail.setText(user.getEmail());
+        }catch(Exception e){
+            LOGGER.severe(e.getMessage());
+        }
     }
+    /**
+     * Cierra la aplicación.
+     * Close the application.
+     */
     @FXML
     private void onActionSalir(){
-        Alert alertCerrarAplicacion = new Alert(AlertType.CONFIRMATION,"Si sale de la aplicación cerrara\nautomáticamente la sesión.",ButtonType.NO,ButtonType.YES);
-        alertCerrarAplicacion.setTitle("Cerrar la aplicación");
-        alertCerrarAplicacion.setHeaderText("¿Quieres salir de la aplicación?");
-        alertCerrarAplicacion.showAndWait().ifPresent(response -> {
-            if (response == ButtonType.YES) {
-                Platform.exit();
-            }
-        });
-        
+        try{
+            //Creamos la alerta con el tipo confirmación, con su texto y botones de
+            //aceptar y cancelar.
+            Alert alertCerrarAplicacion = new Alert(AlertType.CONFIRMATION,"Si sale de la aplicación cerrara\nautomáticamente la sesión.",ButtonType.NO,ButtonType.YES);
+            //Añadimos titulo a la ventana como el alert.
+            alertCerrarAplicacion.setTitle("Cerrar la aplicación");
+            alertCerrarAplicacion.setHeaderText("¿Quieres salir de la aplicación?");
+            //Si acepta cerrara la aplicación.
+            alertCerrarAplicacion.showAndWait().ifPresent(response -> {
+                if (response == ButtonType.YES) {
+                    Platform.exit();
+                }
+            });
+        }catch(Exception e){
+            LOGGER.severe(e.getMessage());
+        }
     }
+    /**
+     * Cierra sesión.
+     * Log out.
+     */
     @FXML
     private void onActionCerrarSesion(){
-        Alert alertCerrarSesion = new Alert(AlertType.CONFIRMATION);
-        alertCerrarSesion.setTitle("Cerrar sesión");
-        alertCerrarSesion.setHeaderText("¿Quieres cerrar sesión?");
-        alertCerrarSesion.showAndWait().ifPresent(response -> {
-            if (response == ButtonType.OK) {
-                stage.hide();
-            }
-        });
+        try{
+            //Creamos la alerta del tipo confirmación.
+            Alert alertCerrarSesion = new Alert(AlertType.CONFIRMATION);
+            //Ponemos titulo de la ventana como titulo para la alerta.
+            alertCerrarSesion.setTitle("Cerrar sesión");
+            alertCerrarSesion.setHeaderText("¿Quieres cerrar sesión?");
+            //Si acepta se cerrara esta ventana.
+            alertCerrarSesion.showAndWait().ifPresent(response -> {
+                if (response == ButtonType.OK) {
+                    stage.hide();
+                }
+            });
+        }catch(Exception e){
+            LOGGER.severe(e.getMessage());
+        }
     }
 }
