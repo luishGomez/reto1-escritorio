@@ -10,7 +10,9 @@ import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
+import view.ControladorGeneral;
 import view.InicioFXController;
+
 
 /**
  *
@@ -21,7 +23,7 @@ public class EscritorioR1 extends javafx.application.Application {
     @Override
     public void start(Stage stage) {
         try{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("view/inicio.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/inicio.fxml"));
 
             Parent root = (Parent)loader.load();
 
@@ -29,7 +31,7 @@ public class EscritorioR1 extends javafx.application.Application {
             controller.setStage(stage);
             controller.initStage(root);
         }catch(IOException e){
-            
+            ControladorGeneral.showErrorAlert("Error al cargar la ventana.");
         }
     }
 

@@ -97,8 +97,8 @@ public class PrincipalFXController {
     private void handleWindowShowing(WindowEvent event){
         LOGGER.info("handlWindowShowing --> LogOut");
         
-        lblBienvenida.setText("Bienvenido "+user.getFullname());
-        lblEmail.setText(user.getEmail());
+        //lblBienvenida.setText("Bienvenido "+user.getFullname());
+        //lblEmail.setText(user.getEmail());
     }
     @FXML
     private void onActionSalir(){

@@ -5,6 +5,10 @@
  */
 package view;
 
+import businessLogic.LogicCliente;
+import businessLogic.LogicFactory;
+import clases.*;
+import java.io.IOException;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,10 +25,7 @@ import javafx.stage.WindowEvent;
  *
  * @author Luis
  */
-public class InicioFXController {
-    
-    public final static int MIN_CARACTERES = 3;
-    public final static int MAX_CARACTERES = 255;
+public class InicioFXController extends ControladorGeneral{
     
     @FXML
     private TextField tfNombreUsuario;
@@ -36,6 +37,7 @@ public class InicioFXController {
     private Button btnIniciarSesion;
     
     private Stage stage;
+    public LogicCliente logic = new LogicFactory().getLogicCliente();
     
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -48,8 +50,10 @@ public class InicioFXController {
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setOnShowing(this::handleWindowShowing);
+        stage.setTitle("App");
         //Add Listener
-        tfNombreUsuario.textProperty().addListener(this::tfNombreUsuarioChange);
+        tfNombreUsuario.textProperty().addListener(this::textChanged);
+        tfContra.textProperty().addListener(this::textChanged);
         btnRegistrar.setOnAction(this::btnRegistrarOnClick);
         btnIniciarSesion.setOnAction(this::btnLoginOnClick);
         stage.show();
@@ -59,12 +63,12 @@ public class InicioFXController {
      * @param w 
      */
     private void handleWindowShowing(WindowEvent w){
-        //El campo Contraseña y el botón Iniciar sesión estarán deshabilitado.
-        tfContra.setDisable(true);
-        tfContra.setPromptText("Introduzca la contraseña");
+        //El botón Iniciar sesión estarán deshabilitado.
         btnIniciarSesion.setDisable(true);
         //El foco estará en el campo Nombre de usuario.
         tfNombreUsuario.requestFocus();
+        //PromtText
+        tfContra.setPromptText("Introduzca la contraseña");
         tfNombreUsuario.setPromptText("Introduzca el nombre de usuario");
         //Tooltips
         btnRegistrar.setTooltip(
@@ -79,48 +83,70 @@ public class InicioFXController {
      * @param oldValue
      * @param newValue 
      */
-    private void tfNombreUsuarioChange(ObservableValue observable,
+    private void textChanged(ObservableValue observable,
              String oldValue,
              String newValue){
-        if(tfNombreUsuario.toString().trim().length()>= MIN_CARACTERES){
-            tfContra.setDisable(false);
-        }
-        if(tfContra.toString().trim().length()>=MIN_CARACTERES){
+        if(tfNombreUsuario.getText().trim().length() >= MIN_CARACTERES && 
+                tfContra.getText().trim().length() >= MIN_CARACTERES){
             btnIniciarSesion.setDisable(false);
+        }else{
+            btnIniciarSesion.setDisable(true);
         }
-        if(tfNombreUsuario.toString().trim().length()>= MAX_CARACTERES || 
-                tfContra.toString().trim().length()>= MAX_CARACTERES){
-            
+        if(tfNombreUsuario.getText().trim().length() > MAX_CARACTERES){
+            tfNombreUsuario.setText(tfNombreUsuario.getText().trim()
+                    .substring(0, MAX_CARACTERES));
+            showErrorAlert("Has superado el máximo tamaño de nombre de usuario"
+                    + ", 255.");
+        }
+        if(tfContra.getText().trim().length() > MAX_CARACTERES){
+            tfContra.setText(tfContra.getText().trim()
+                    .substring(0, MAX_CARACTERES));
+            showErrorAlert("Has superado el máximo tamaño de contraseña, 255.");
         }
     }
     /**
      * Acción activada por el botón Registrar. Muestra la ventana Registrar.
      * @param event 
      */
-    private void btnRegistrarOnClick(ActionEvent event){
-        FXMLLoader loader = new FXMLLoader(getClass()
-                .getResource("Registrarse.fxml"));
-        
-        Parent root = (Parent)loader.load();
-        
-        RegistrarseFXController controller = 
-                ((RegistrarseFXController)loader.getController());
-        
-        controller.initStage(root);
+    private void btnRegistrarOnClick(ActionEvent event) {
+        /*try {
+            FXMLLoader loader = new FXMLLoader(getClass()
+                    .getResource("Registrarse.fxml"));
+
+            Parent root = (Parent) loader.load();
+
+            RegistrarseFXController controller
+                    = ((RegistrarseFXController) loader.getController());
+
+            controller.initStage(root);
+        } catch (IOException e) {
+            showErrorAlert("Error al cargar la ventana de Registrar.");
+        }*/
     }
     /**
      * 
      * @param event 
      */
     private void btnLoginOnClick(ActionEvent event){
-        FXMLLoader loader = new FXMLLoader(getClass()
-                .getResource("principal.fxml"));
-        
-        Parent root = (Parent)loader.load();
-        
-        PrincipalFXController controller = 
-                ((PrincipalFXController)loader.getController());
-            
-        controller.initStage(root);
+        /*String nombre = tfNombreUsuario.getText().toString();
+        String contra = tfContra.getText().toString();
+        User user = logic.login(contra, contra);
+        if(user != null){*/
+            try{
+            FXMLLoader loader = new FXMLLoader(getClass()
+                    .getResource("principal.fxml"));
+
+            Parent root = (Parent)loader.load();
+
+            PrincipalFXController controller = 
+                    ((PrincipalFXController)loader.getController());
+
+            controller.initStage(root);
+        }catch(IOException e){
+            showErrorAlert("Error al cargar la ventana de Login.");
+        }
+        /*}else{
+            showErrorAlert("Nombre de usuario o contraseña incorrecto.");
+        }*/
     }
 }
