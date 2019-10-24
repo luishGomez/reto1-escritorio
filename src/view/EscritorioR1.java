@@ -32,7 +32,7 @@ public class EscritorioR1 extends Application{
                     ((RegistrarseFXMLController)loader.getController());
             
             
-        viewController.setStage(stage);
+        //viewController.setStage(stage);
         viewController.initStage(root);
     }
 
