@@ -18,6 +18,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -54,6 +56,8 @@ public class InicioFXController extends ControladorGeneral{
         //Add Listener
         tfNombreUsuario.textProperty().addListener(this::textChanged);
         tfContra.textProperty().addListener(this::textChanged);
+        tfNombreUsuario.setOnKeyPressed(this::keyPress);
+        tfContra.setOnKeyPressed(this::keyPress);
         btnRegistrar.setOnAction(this::btnRegistrarOnClick);
         btnIniciarSesion.setOnAction(this::btnLoginOnClick);
         stage.show();
@@ -102,6 +106,12 @@ public class InicioFXController extends ControladorGeneral{
             tfContra.setText(tfContra.getText().trim()
                     .substring(0, MAX_CARACTERES));
             showErrorAlert("Has superado el máximo tamaño de contraseña, 255.");
+        }
+    }
+    
+    private void keyPress(KeyEvent key){
+        if(key.getCode().equals(KeyCode.ENTER)) {
+            btnIniciarSesion.fire();
         }
     }
     /**

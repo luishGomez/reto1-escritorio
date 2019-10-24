@@ -75,7 +75,7 @@ public class PrincipalFXController {
             stage.setScene(scene);
             stage.setTitle("Principal");
             stage.setResizable(true);
-            stage.setFullScreen(true);
+            stage.setMaximized(true);
             //Vamos a rellenar los datos en la ventana.
             stage.setOnShowing(this::handleWindowShowing);
             stage.show();
@@ -92,8 +92,8 @@ public class PrincipalFXController {
     private void handleWindowShowing(WindowEvent event){
         try{
             LOGGER.info("handlWindowShowing --> LogOut");
-            lblBienvenida.setText("Bienvenido "+user.getFullname());
-            lblEmail.setText(user.getEmail());
+            //lblBienvenida.setText("Bienvenido "+user.getFullname());
+            //lblEmail.setText(user.getEmail());
         }catch(Exception e){
             LOGGER.severe(e.getMessage());
         }
