@@ -11,6 +11,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -21,7 +24,7 @@ import javafx.stage.WindowEvent;
 
 /**
  * Es el controlador de la ventana principal.fxml
- * 
+ *
  * @author Ricardo Peinado Lastra
  */
 public class PrincipalFXController {
@@ -63,9 +66,9 @@ public class PrincipalFXController {
      */
     @FXML
     private void btnLogOut(ActionEvent event){
-    /**
-     * Establece en escenario.
-     */    
+        /**
+         * Establece en escenario.
+         */
     }
     /**
      * Inicializa en escenario para la vista.
@@ -89,7 +92,7 @@ public class PrincipalFXController {
     }
     /**
      * Rellena los datos al enseñar la vista.
-     * @param event 
+     * @param event
      */
     private void handleWindowShowing(WindowEvent event){
         LOGGER.info("handlWindowShowing --> LogOut");
@@ -99,11 +102,25 @@ public class PrincipalFXController {
     }
     @FXML
     private void onActionSalir(){
+        Alert alertCerrarAplicacion = new Alert(AlertType.CONFIRMATION,"Si sale de la aplicación cerrara\nautomáticamente la sesión.",ButtonType.NO,ButtonType.YES);
+        alertCerrarAplicacion.setTitle("Cerrar la aplicación");
+        alertCerrarAplicacion.setHeaderText("¿Quieres salir de la aplicación?");
+        alertCerrarAplicacion.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.YES) {
+                Platform.exit();
+            }
+        });
         
-        Platform.exit();
     }
     @FXML
     private void onActionCerrarSesion(){
-        stage.hide();
+        Alert alertCerrarSesion = new Alert(AlertType.CONFIRMATION);
+        alertCerrarSesion.setTitle("Cerrar sesión");
+        alertCerrarSesion.setHeaderText("¿Quieres cerrar sesión?");
+        alertCerrarSesion.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                stage.hide();
+            }
+        });
     }
 }
