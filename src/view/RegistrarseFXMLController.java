@@ -7,13 +7,22 @@ package view;
 
 
 
+import businessLogic.LogicCliente;
+import businessLogic.LogicFactory;
 import clases.*;
+import exceptions.DAOException;
+import exceptions.EsperaCompletaException;
+import exceptions.LogicException;
+import exceptions.LoginIDException;
+import exceptions.ServerException;
 import java.util.logging.Logger;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -22,6 +31,7 @@ import javafx.scene.control.Tooltip;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import static view.ControladorGeneral.showErrorAlert;
 
 /**
  *
@@ -30,7 +40,9 @@ import javafx.stage.WindowEvent;
 public class RegistrarseFXMLController{
     private static final Logger LOGGER = Logger.getLogger("reto1_escritorio.view.Registro");
     private Stage stage;
-    private User user;
+    private User user=new User();
+    
+    private LogicCliente logic = new LogicFactory().getLogicCliente();
     
     Tooltip tooltip = new Tooltip();
     @FXML
@@ -68,8 +80,30 @@ public class RegistrarseFXMLController{
     }
     @FXML
     private void btnRegistrar(ActionEvent event){
-        //ventana logout iniciar stage
+        user.setEmail(txtEmail.getText().trim());
+        user.setFullname(txtNombre.getText());
+        user.setLogin(txtNombreUsuario.getText());
+        user.setPassword(pswContrasena.getText());
         
+        
+        try{
+            if(logic.registro(user)){
+                Alert alert=new Alert(AlertType.INFORMATION);
+                alert.setTitle("Informacion de resgistro");
+                alert.setHeaderText("Se ha registrado correctamente");
+            }
+        }catch(LoginIDException e){
+           //modificar mas adelante
+            showErrorAlert("Ese ide ya existe");
+        }catch(DAOException e){
+            showErrorAlert("Ha ocurrido un fallo al intentar conectarse, intentelo otra vez o vuelva mas tarde.");
+        }catch(ServerException e){
+            showErrorAlert("Error en el servidor.");
+        }catch(EsperaCompletaException e){
+            showErrorAlert("Tiempo de espera agotado");
+        }catch(LogicException e){
+            showErrorAlert("El servidor no responde");
+        }
     }
     
     
