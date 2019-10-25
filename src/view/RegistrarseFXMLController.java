@@ -1,25 +1,20 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+* To change this license header, choose License Headers in Project Properties.
+* To change this template file, choose Tools | Templates
+* and open the template in the editor.
+*/
 package view;
 
 
 
+import clases.*;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -32,8 +27,11 @@ import javafx.stage.WindowEvent;
  * @author sergio
  */
 public class RegistrarseFXMLController{
-    private static final Logger LOGGER = Logger.getLogger("reto1_escritorio.view");
+    private static final Logger LOGGER = Logger.getLogger("reto1_escritorio.view.Registro");
     private Boolean email=false;
+    private Stage stage;
+    private User user;
+    
     Tooltip tooltip = new Tooltip();
     @FXML
     private TextField txtNombre;
@@ -42,11 +40,11 @@ public class RegistrarseFXMLController{
     @FXML
     private TextField txtNombreUsuario;
     @FXML
-    private PasswordField pswContraseña;
+    private PasswordField pswContrasena;
     @FXML
-    private PasswordField pswConfirmarContraseña;
+    private PasswordField pswConfirmarContrasena;
     @FXML
-    private Label lblMostrarContraseña;
+    private Label lblMostrarContrasena;
     @FXML
     private Button btnCancelar;
     @FXML
@@ -60,28 +58,33 @@ public class RegistrarseFXMLController{
     @FXML
     private Label lblNombreUsuario;
     @FXML
-    private Label lblContraseña;
+    private Label lblContrasena;
     @FXML
-    private Label lblConfirmarContraseña;
+    private Label lblConfirmarContrasena;
     
-   @FXML
+    @FXML
     private void btnVolver(ActionEvent event){
         //ventana login iniciar stage
     }
     @FXML
-     private void btnRegistrar(ActionEvent event){
-        //ventana logout iniciar stage 
+    private void btnRegistrar(ActionEvent event){
+        //ventana logout iniciar stage
         
-     }
-              
+    }
     
-    /*
-     Iniciamos el stage con la scena y su parent respectivo de Registrarse.
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+    public void setUser(User user){
+        this.user = user;
+    }
+    /**
+     * Iniciamos el stage con la scena y su parent respectivo.
+     * @param root 
      */
     public void initStage(Parent root){
-       //Crear scena y stage
+        //Crear scena y stage
         Scene scene = new Scene(root);
-        Stage stage = new Stage();
         //Enviar scena al stage.
         stage.setScene(scene);
         //Maximizable deshabilitado.
@@ -89,95 +92,159 @@ public class RegistrarseFXMLController{
         stage.setTitle("Registro");
         //El foco estará en Nombre.
         txtNombre.requestFocus();
-        //añadimos controladores.
+        //anadimos controladores.
         stage.setOnShowing(this::HandleWindowShowing);
         txtNombre.textProperty().addListener(this::HandleTextChanged);
         txtNombreUsuario.textProperty().addListener(this::HandleTextChanged);
         txtEmail.textProperty().addListener(this::HandleTextChanged);
-        txtEmail.focusedProperty().addListener(this::focusChanged);
-        pswContraseña.textProperty().addListener(this::HandleTextChanged);
-        pswConfirmarContraseña.textProperty().addListener(this::HandleTextChanged);
+        //txtEmail.focusedProperty().addListener(this::focusChanged);
+        pswContrasena.textProperty().addListener(this::HandleTextChanged);
+        pswConfirmarContrasena.textProperty().addListener(this::HandleTextChanged);
         //tooltips de ayuda para los botones
-        btnRegistrar.setTooltip(new Tooltip("Registro en la base de datos"));
         btnCancelar.setTooltip(new Tooltip("Regresar al login"));
         //textos de ayuda promptext
         txtNombre.setPromptText("ej. Aitor Sanchez");
         txtNombreUsuario.setPromptText("ej. Aitor_89");
-        pswContraseña.setPromptText("Contraseña");
-        pswConfirmarContraseña.setPromptText("Confirmar");
+        txtEmail.setPromptText("ej. Aitor_Sanchez@algo.com");
+        pswContrasena.setPromptText("Contrasena");
+        pswConfirmarContrasena.setPromptText("Confirmar");
         //Mostrar ventana
         stage.show();
     }
+    /**
+     * Configuracion del inicio de la ventana.
+     * @param e 
+     */
     private void HandleWindowShowing(WindowEvent e){
         //boton registrar desabilitado
-         btnRegistrar.setDisable(true);
-        // pswConfirmarContraseña.setDisable(true);
+        btnRegistrar.setDisable(true);
+        
     }
+    /**
+     * Controlador de eventos de cambio de texto.
+     * @param e
+     * @param newValue 
+     * @param oldValue 
+     */
     private void HandleTextChanged(ObservableValue e, String newValue ,String oldValue){
-        Boolean contraCorrecto = false;
-         if(txtNombre.getText().length()>40){
-             LOGGER.info("exceso de caracteres");
-             txtNombre.setText(newValue); 
-         }
-         if(txtNombreUsuario.getText().length()>15){
-             LOGGER.info("exceso de caracteres");
-             txtNombreUsuario.setText(newValue);
-         }
-         if(txtEmail.getText().length()>40){
-             LOGGER.info("exceso de caracteres");
-             txtEmail.setText(newValue); 
-         }
-         if(pswContraseña.getText().length()>40){
-             LOGGER.info("exceso de caracteres");
-             pswContraseña.setText(newValue); 
-         }
-         if(!pswContraseña.getText().trim().isEmpty() && pswConfirmarContraseña.isFocused()){
-             if(pswConfirmarContraseña.getText().equals(pswContraseña.getText())){
-                 LOGGER.info("coinciden");
-                 contraCorrecto=true;
-             }
-                
-             else{
-                 LOGGER.info("no conciden");
-                 contraCorrecto = false;
-             }
-                
-         }
-         LOGGER.info(email.toString());
-         if(!txtNombre.getText().trim().isEmpty() && !txtNombreUsuario.getText().trim().isEmpty() && !txtEmail.getText().trim().isEmpty() && !pswContraseña.getText().trim().isEmpty() && !pswConfirmarContraseña.getText().trim().isEmpty() && contraCorrecto && email)
-             btnRegistrar.setDisable(false);
-         else
-             btnRegistrar.setDisable(true);
-        
+        //comprobacion de Nombre completo su caracteres maximos.
+        if(txtNombre.getText().length()>40 && txtNombre.isFocused()){
+            LOGGER.info("El nombre tiene exceso de caracteres");
+            //txtNombre.setText(newValue);
+            txtNombre.setText(newValue.trim().substring(0,40));
+        }
+        //comprobacion de Nombre de usuario usuario caracteres maximos.
+        if(txtNombreUsuario.getText().length()>15 && txtNombreUsuario.isFocused()){
+            LOGGER.info("El nombre de usuario tiene exceso de caracteres");
+            txtNombreUsuario.setText(newValue.trim().substring(0,15));
+        }
+        //comprobacion de Email usuario caracteres maximos.
+        if(txtEmail.isFocused()){
+            if(txtEmail.getText().length()>40)
+                txtEmail.setText(newValue.trim().substring(0,40));           
+        }
+        //Comprobacion de contrasena caracteres maximos.
+        if(pswContrasena.getText().length()>15 && pswContrasena.isFocused())
+            pswContrasena.setText(newValue.trim().substring(0,15));
+        if(pswConfirmarContrasena.getText().length()>15 && pswConfirmarContrasena.isFocused())
+            pswConfirmarContrasena.setText(newValue.trim().substring(0,15));
+        //Comprobacion de que todos los campos esten habilitados.
+        if(!txtNombre.getText().trim().isEmpty() && !txtNombreUsuario.getText().trim().isEmpty()
+                && esEmail(txtEmail.getText().trim()) && !pswContrasena.getText().trim().isEmpty()
+                && !pswConfirmarContrasena.getText().trim().isEmpty() 
+                && passwordsCorrect(pswContrasena.getText().trim(),pswConfirmarContrasena.getText().trim()))
+            btnRegistrar.setDisable(false);
+        else
+            btnRegistrar.setDisable(true);
     }
-    public void focusChanged (ObservableValue value, Boolean newValue, Boolean oldValue){
-        if(newValue)
-            email = comprobarEmail();
+   /**
+    * Comprobacion del formato del Email.
+    * @param email
+    * @return  true si el email es correcto
+    */
+    private  boolean esEmail(String email) {
+        boolean resu=true;
+        String firstPart,secondPart,thirdPart;
+        if(email.length()<5 || email.length()>40){
+            resu=false;
+        }else{
+            try{
+                firstPart=email.substring(0, email.indexOf('@'));
+                secondPart=email.substring(email.indexOf('@')+1,email.indexOf('.', email.indexOf('@')));
+                thirdPart=email.substring(email.indexOf('.',email.indexOf('.', email.indexOf('@')))+1);
+                if(!isEmailFirstPart(firstPart) || !isEmailSecondPart(secondPart) || !isEmailThridPart(thirdPart))
+                    resu=false;
+            }catch(StringIndexOutOfBoundsException e){
+                resu=false;
+            }
+        }
+        return resu;
+    }
+    /**
+     * Comprobar primera parte del email (anterior al "@")
+     * @param cadena.
+     * @return true si es correcto.
+     */
+    private  boolean isEmailFirstPart(String cadena) {
+        boolean resu=true;
+        for(int i=0;i<cadena.length();i++){
+            if(!Character.isAlphabetic(cadena.charAt(i)) && !Character.isDigit(cadena.charAt(i)) && cadena.charAt(i)!='.' && cadena.charAt(i)!='-' && cadena.charAt(i)!='_'){
+                resu=false;
+                break;
+            }
+        }
+        return resu;
+    }
+    /**
+     * Comprobar segunda parte del email (despues del "@" y antes del punto).
+     * @param cadena.
+     * @return true si es correcto.
+     */
+    private  boolean isEmailSecondPart(String cadena) {
+        boolean resu=true;
+        for(int i=0;i<cadena.length();i++){
+            if(!Character.isAlphabetic(cadena.charAt(i)) && !Character.isDigit(cadena.charAt(i)) && cadena.charAt(i)!='-'){
+                resu=false;
+                break;
+            }
+        }
+        return resu;
+    }
+    /**
+     * Comprobar tercera parte del email (despues del ".").
+     * @param cadena.
+     * @return true si esta correcto.
+     */
+    private  boolean isEmailThridPart(String cadena) {
+        boolean resu=true;
+        for(int i=0;i<cadena.length();i++){
+            if(!Character.isAlphabetic(cadena.charAt(i)) && !Character.isDigit(cadena.charAt(i))){
+                resu=false;
+                break;
+            }
+        }
+        return resu;
+    }
+    /**
+     * Comprobar que contrasena y confirmarContrasena sean identicos y cumplan el max tamaño de acuerdo a la base de datos.
+     * @param contrasena.
+     * @param contrasenaConfirmacion.
+     * @return true si esta correcto.
+     */
+    public boolean passwordsCorrect(String contrasena,String contrasenaConfirmacion){
+        boolean resultado=true;
+        if(contrasena.length()>=3 && contrasena.length()<=40 && contrasenaConfirmacion.length()>=3 && contrasenaConfirmacion.length()<=40){
+            if(!contrasena.equals(contrasenaConfirmacion)){
+                resultado=false;
                 
-        else if(oldValue)
-            LOGGER.info("nada");
+            }
+        }else{
+            resultado=false;
             
-    }
-
-    private Boolean comprobarEmail() {
-        Boolean b=false;
-        /*
-            prob cambiar metodo d validacion
-        */
-        Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-                        + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
-        
-        Matcher matcher = pattern.matcher(txtEmail.getText().toString());
-        
-        if(matcher.find()){
-            LOGGER.info("Email correct");
-         b=true;
         }
-           
-        else{
-            LOGGER.info("Email erroneo");
-            b=false;
-        }
-        return b;
+        return resultado;
+        
     }
+    
+    
 }

@@ -18,15 +18,15 @@
       <TextField fx:id="txtNombre" layoutX="96.0" layoutY="138.0" prefHeight="25.0" prefWidth="198.0" />
       <TextField fx:id="txtEmail" layoutX="96.0" layoutY="209.0" prefHeight="25.0" prefWidth="198.0" />
       <TextField fx:id="txtNombreUsuario" layoutX="370.0" layoutY="138.0" prefHeight="25.0" prefWidth="149.0" />
-      <PasswordField fx:id="pswContraseña" layoutX="370.0" layoutY="196.0" prefHeight="25.0" prefWidth="149.0" />
-      <PasswordField fx:id="pswConfirmarContraseña" layoutX="370.0" layoutY="255.0" prefHeight="25.0" prefWidth="149.0"/>
+      <PasswordField fx:id="pswContrasena" layoutX="370.0" layoutY="196.0" prefHeight="25.0" prefWidth="149.0" />
+      <PasswordField fx:id="pswConfirmarContrasena" layoutX="370.0" layoutY="255.0" prefHeight="25.0" prefWidth="149.0"/>
       <Button fx:id="btnCancelar" layoutX="127.0" layoutY="350.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" style="-fx-background-image: red;" text="Cancelar" textFill="#431b1b" onAction="#btnVolver"/>
       <Button fx:id="btnRegistrar" layoutX="401.0" layoutY="350.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" style="-fx-background-color: #70C3FA; -fx-border-color: #199CF3;" text="Registrar" onAction="#btnRegistrar"/>
       <Label fx:id="lblNombreDeLogo" layoutX="54.0" layoutY="35.0" prefHeight="17.0" prefWidth="57.0" text="Equipo4" />
       <Label fx:id="lblNombre" layoutX="98.0" layoutY="113.0" prefHeight="17.0" prefWidth="149.0" text="Nombre" />
       <Label fx:id="lblEmail" layoutX="98.0" layoutY="187.0" prefHeight="17.0" prefWidth="149.0" text="Email" />
       <Label fx:id="lblNombreUsuario" layoutX="372.0" layoutY="113.0" prefHeight="17.0" prefWidth="149.0" text="Nombre de usuario" />
-      <Label fx:id="lblContraseña" layoutX="370.0" layoutY="179.0" prefHeight="17.0" prefWidth="149.0" text="Contraseña" />
-      <Label fx:id="lblConfirmarContraseña" layoutX="370.0" layoutY="234.0" prefHeight="17.0" prefWidth="149.0" text="Confirmar contraseña" />
+      <Label fx:id="lblContrasena" layoutX="370.0" layoutY="179.0" prefHeight="17.0" prefWidth="149.0" text="Contrasena" />
+      <Label fx:id="lblConfirmarContrasena" layoutX="370.0" layoutY="234.0" prefHeight="17.0" prefWidth="149.0" text="Confirmar contrasena" />
    </children>
 </Pane>
