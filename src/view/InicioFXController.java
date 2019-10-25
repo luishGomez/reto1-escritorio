@@ -5,14 +5,9 @@
 */
 package view;
 
-import businessLogic.LogicCliente;
-import businessLogic.LogicFactory;
+import businessLogic.*;
 import clases.*;
-import exceptions.DAOException;
-import exceptions.LogicException;
-import exceptions.LoginIDException;
-import exceptions.PasswordException;
-import exceptions.ServerException;
+import exceptions.*;
 import java.io.IOException;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -23,6 +18,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.KeyCode;
@@ -39,7 +35,7 @@ public class InicioFXController extends ControladorGeneral{
     @FXML
     private TextField tfNombreUsuario;
     @FXML
-    private TextField tfContra;
+    private PasswordField tfContra;
     @FXML
     private Button btnRegistrar;
     @FXML
@@ -126,19 +122,19 @@ public class InicioFXController extends ControladorGeneral{
      * @param event
      */
     private void btnRegistrarOnClick(ActionEvent event) {
-        /*try {
+        try {
         FXMLLoader loader = new FXMLLoader(getClass()
         .getResource("Registrarse.fxml"));
         
         Parent root = (Parent) loader.load();
         
-        RegistrarseFXController controller
-        = ((RegistrarseFXController) loader.getController());
+        RegistrarseFXMLController controller
+        = ((RegistrarseFXMLController) loader.getController());
         
         controller.initStage(root);
         } catch (IOException e) {
         showErrorAlert("Error al cargar la ventana de Registrar.");
-        }*/
+        }
     }
     /**
      *
@@ -167,20 +163,17 @@ public class InicioFXController extends ControladorGeneral{
                 showErrorAlert("Nombre de usuario o contraseña incorrecto.");
             }
         }catch(PasswordException e){
-            Alert alert=new Alert(AlertType.ERROR);
-            alert.showAndWait();
+            showErrorAlert("Contraseña incorrecta.");
         }catch(LoginIDException e){
-            Alert alert=new Alert(AlertType.ERROR);
-            alert.showAndWait();
+            showErrorAlert("Nombre de usuario incorrecto.");
         }catch(DAOException e){
-            Alert alert=new Alert(AlertType.ERROR);
-            alert.showAndWait();
+            showErrorAlert("Problemas con la base de datos, intentelo en un rato.");
         }catch(ServerException e){
-            Alert alert=new Alert(AlertType.ERROR);
-            alert.showAndWait();
+            showErrorAlert("Problemas con el servidor.");
         }catch(LogicException e){
-            Alert alert=new Alert(AlertType.ERROR);
-            alert.showAndWait();
+            showErrorAlert("Problemas con el servidor, intentelo en un rato.");
+        }catch(EsperaCompletaException e){
+            showErrorAlert("El servidor no se encuentra disponible en estos momentos.");
         }
     }
 }
