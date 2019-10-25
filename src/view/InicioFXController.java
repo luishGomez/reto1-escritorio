@@ -126,19 +126,19 @@ public class InicioFXController extends ControladorGeneral{
      * @param event
      */
     private void btnRegistrarOnClick(ActionEvent event) {
-        /*try {
+        try {
         FXMLLoader loader = new FXMLLoader(getClass()
         .getResource("Registrarse.fxml"));
         
         Parent root = (Parent) loader.load();
         
-        RegistrarseFXController controller
-        = ((RegistrarseFXController) loader.getController());
+        RegistrarseFXMLController controller
+        = ((RegistrarseFXMLController) loader.getController());
         
         controller.initStage(root);
         } catch (IOException e) {
         showErrorAlert("Error al cargar la ventana de Registrar.");
-        }*/
+        }
     }
     /**
      *
