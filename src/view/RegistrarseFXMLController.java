@@ -76,7 +76,7 @@ public class RegistrarseFXMLController{
     
     @FXML
     private void btnVolver(ActionEvent event){
-        //ventana login iniciar stage
+        stage.hide();
     }
     @FXML
     private void btnRegistrar(ActionEvent event){
@@ -91,9 +91,11 @@ public class RegistrarseFXMLController{
                 Alert alert=new Alert(AlertType.INFORMATION);
                 alert.setTitle("Informacion de resgistro");
                 alert.setHeaderText("Se ha registrado correctamente");
+                alert.showAndWait();
+                stage.hide();
             }
         }catch(LoginIDException e){
-           //modificar mas adelante
+            //modificar mas adelante
             showErrorAlert("Ese ide ya existe");
         }catch(DAOException e){
             showErrorAlert("Ha ocurrido un fallo al intentar conectarse, intentelo otra vez o vuelva mas tarde.");
@@ -112,7 +114,7 @@ public class RegistrarseFXMLController{
     }
     /**
      * Iniciamos el stage con la scena y su parent respectivo.
-     * @param root 
+     * @param root
      */
     public void initStage(Parent root){
         //Crear scena y stage
@@ -147,7 +149,7 @@ public class RegistrarseFXMLController{
     }
     /**
      * Configuracion del inicio de la ventana.
-     * @param e 
+     * @param e
      */
     private void HandleWindowShowing(WindowEvent e){
         //boton registrar desabilitado
@@ -157,8 +159,8 @@ public class RegistrarseFXMLController{
     /**
      * Controlador de eventos de cambio de texto.
      * @param e
-     * @param newValue 
-     * @param oldValue 
+     * @param newValue
+     * @param oldValue
      */
     private void HandleTextChanged(ObservableValue e, String newValue ,String oldValue){
         //comprobacion de Nombre completo su caracteres maximos.
@@ -175,7 +177,7 @@ public class RegistrarseFXMLController{
         //comprobacion de Email usuario caracteres maximos.
         if(txtEmail.isFocused()){
             if(txtEmail.getText().length()>40)
-                txtEmail.setText(newValue.trim().substring(0,40));           
+                txtEmail.setText(newValue.trim().substring(0,40));
         }
         //Comprobacion de contrasena caracteres maximos.
         if(pswContrasena.getText().length()>15 && pswContrasena.isFocused())
@@ -185,17 +187,17 @@ public class RegistrarseFXMLController{
         //Comprobacion de que todos los campos esten habilitados.
         if(!txtNombre.getText().trim().isEmpty() && !txtNombreUsuario.getText().trim().isEmpty()
                 && esEmail(txtEmail.getText().trim()) && !pswContrasena.getText().trim().isEmpty()
-                && !pswConfirmarContrasena.getText().trim().isEmpty() 
+                && !pswConfirmarContrasena.getText().trim().isEmpty()
                 && passwordsCorrect(pswContrasena.getText().trim(),pswConfirmarContrasena.getText().trim()))
             btnRegistrar.setDisable(false);
         else
             btnRegistrar.setDisable(true);
     }
-   /**
-    * Comprobacion del formato del Email.
-    * @param email
-    * @return  true si el email es correcto
-    */
+    /**
+     * Comprobacion del formato del Email.
+     * @param email
+     * @return  true si el email es correcto
+     */
     private  boolean esEmail(String email) {
         boolean resu=true;
         String firstPart,secondPart,thirdPart;
