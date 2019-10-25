@@ -9,6 +9,7 @@ import businessLogic.*;
 import clases.*;
 import exceptions.*;
 import java.io.IOException;
+import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,6 +19,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
@@ -39,7 +41,9 @@ public class InicioFXController extends ControladorGeneral{
     @FXML
     private Button btnRegistrar;
     @FXML
-    private Button btnIniciarSesion;
+    private Button btnAcceder;
+    @FXML
+    private Button btnSalir;
     
     private Stage stage;
     public LogicCliente logic = new LogicFactory().getLogicCliente();
@@ -62,7 +66,8 @@ public class InicioFXController extends ControladorGeneral{
         tfNombreUsuario.setOnKeyPressed(this::keyPress);
         tfContra.setOnKeyPressed(this::keyPress);
         btnRegistrar.setOnAction(this::btnRegistrarOnClick);
-        btnIniciarSesion.setOnAction(this::btnLoginOnClick);
+        btnAcceder.setOnAction(this::btnLoginOnClick);
+        btnSalir.setOnAction(this::btnSalirOnClick);
         stage.show();
     }
     /**
@@ -71,7 +76,7 @@ public class InicioFXController extends ControladorGeneral{
      */
     private void handleWindowShowing(WindowEvent w){
         //El botón Iniciar sesión estarán deshabilitado.
-        btnIniciarSesion.setDisable(true);
+        btnAcceder.setDisable(true);
         //El foco estará en el campo Nombre de usuario.
         tfNombreUsuario.requestFocus();
         //PromtText
@@ -80,7 +85,7 @@ public class InicioFXController extends ControladorGeneral{
         //Tooltips
         btnRegistrar.setTooltip(
                 new Tooltip("Pulse para abrir formulario de registro."));
-        btnIniciarSesion.setTooltip(new Tooltip("Pulse para iniciar sesión."));
+        btnAcceder.setTooltip(new Tooltip("Pulse para iniciar sesión."));
         //La ventana no puede cambiar de tamaño.
         stage.setResizable(false);
     }
@@ -95,9 +100,9 @@ public class InicioFXController extends ControladorGeneral{
             String newValue){
         if(tfNombreUsuario.getText().trim().length() >= MIN_CARACTERES &&
                 tfContra.getText().trim().length() >= MIN_CARACTERES){
-            btnIniciarSesion.setDisable(false);
+            btnAcceder.setDisable(false);
         }else{
-            btnIniciarSesion.setDisable(true);
+            btnAcceder.setDisable(true);
         }
         if(tfNombreUsuario.getText().trim().length() > MAX_CARACTERES){
             tfNombreUsuario.setText(tfNombreUsuario.getText().trim()
@@ -114,7 +119,7 @@ public class InicioFXController extends ControladorGeneral{
     
     private void keyPress(KeyEvent key){
         if(key.getCode().equals(KeyCode.ENTER)) {
-            btnIniciarSesion.fire();
+            btnAcceder.fire();
         }
     }
     /**
@@ -175,5 +180,19 @@ public class InicioFXController extends ControladorGeneral{
         }catch(EsperaCompletaException e){
             showErrorAlert("El servidor no se encuentra disponible en estos momentos.");
         }
+    }
+    
+    public void btnSalirOnClick(ActionEvent event){
+        String mensaje = "¿Estás seguro de que desea cerrar la aplicación?";
+        Alert alertCerrarAplicacion = new Alert(AlertType.CONFIRMATION,mensaje,ButtonType.NO,ButtonType.YES);
+            //Añadimos titulo a la ventana como el alert.
+            alertCerrarAplicacion.setTitle("Cerrar la aplicación");
+            alertCerrarAplicacion.setHeaderText("¿Quieres salir de la aplicación?");
+            //Si acepta cerrara la aplicación.
+            alertCerrarAplicacion.showAndWait().ifPresent(response -> {
+                if (response == ButtonType.YES) {
+                    Platform.exit();
+                }
+            });
     }
 }
