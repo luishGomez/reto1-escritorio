@@ -127,6 +127,8 @@ public class InicioFXController extends ControladorGeneral{
      * @param event
      */
     private void btnRegistrarOnClick(ActionEvent event) {
+        tfNombreUsuario.setText("");
+        tfContra.setText("");
         try {
         FXMLLoader loader = new FXMLLoader(getClass()
         .getResource("Registrarse.fxml"));
@@ -169,10 +171,13 @@ public class InicioFXController extends ControladorGeneral{
             }
         }catch(PasswordException e){
             showErrorAlert("Contraseña incorrecta.");
+            tfContra.setText("");
         }catch(LoginIDException e){
             showErrorAlert("Nombre de usuario incorrecto.");
+            tfContra.setText("");
+            tfNombreUsuario.setText("");
         }catch(DAOException e){
-            showErrorAlert("Problemas con la base de datos, intentelo en un rato.");
+            showErrorAlert("Ha ocurrido un error en el servidor, intentelo otra vez o vuelva mas tarde.");
         }catch(ServerException e){
             showErrorAlert("Problemas con el servidor.");
         }catch(LogicException e){

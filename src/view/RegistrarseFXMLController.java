@@ -28,6 +28,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -85,26 +86,30 @@ public class RegistrarseFXMLController{
         user.setLogin(txtNombreUsuario.getText());
         user.setPassword(pswContrasena.getText());
         
-        
-        try{
-            if(logic.registro(user)){
-                Alert alert=new Alert(AlertType.INFORMATION);
-                alert.setTitle("Informacion de resgistro");
-                alert.setHeaderText("Se ha registrado correctamente");
-                alert.showAndWait();
-                stage.hide();
+        if(!esEmail(txtEmail.getText().trim()))
+            lblEmail.setTextFill(Color.web("red"));
+        else{
+            lblEmail.setTextFill(Color.web("black"));
+            try{
+                if(logic.registro(user)){
+                    Alert alert=new Alert(AlertType.INFORMATION);
+                    alert.setTitle("Informacion de resgistro");
+                    alert.setHeaderText("Se ha registrado correctamente");
+                    alert.showAndWait();
+                    stage.hide();
+                }
+            }catch(LoginIDException e){
+                //modificar mas adelante
+                showErrorAlert("Ese ide ya existe");
+            }catch(DAOException e){
+                showErrorAlert("Ha ocurrido un error en el servidor, intentelo otra vez o vuelva mas tarde.");
+            }catch(ServerException e){
+                showErrorAlert("Error en el servidor.");
+            }catch(EsperaCompletaException e){
+                showErrorAlert("Intentelo otra vez o vuelva mas tarde.");
+            }catch(LogicException e){
+                showErrorAlert("El servidor no responde.");
             }
-        }catch(LoginIDException e){
-            //modificar mas adelante
-            showErrorAlert("Ese ide ya existe");
-        }catch(DAOException e){
-            showErrorAlert("Ha ocurrido un fallo al intentar conectarse, intentelo otra vez o vuelva mas tarde.");
-        }catch(ServerException e){
-            showErrorAlert("Error en el servidor.");
-        }catch(EsperaCompletaException e){
-            showErrorAlert("Tiempo de espera agotado");
-        }catch(LogicException e){
-            showErrorAlert("El servidor no responde");
         }
     }
     
@@ -186,12 +191,17 @@ public class RegistrarseFXMLController{
             pswConfirmarContrasena.setText(newValue.trim().substring(0,15));
         //Comprobacion de que todos los campos esten habilitados.
         if(!txtNombre.getText().trim().isEmpty() && !txtNombreUsuario.getText().trim().isEmpty()
-                && esEmail(txtEmail.getText().trim()) && !pswContrasena.getText().trim().isEmpty()
+                && !txtEmail.getText().trim().isEmpty() && !pswContrasena.getText().trim().isEmpty()
                 && !pswConfirmarContrasena.getText().trim().isEmpty()
-                && passwordsCorrect(pswContrasena.getText().trim(),pswConfirmarContrasena.getText().trim()))
+                && passwordsCorrect(pswContrasena.getText().trim(),pswConfirmarContrasena.getText().trim())){
             btnRegistrar.setDisable(false);
-        else
+        }else{
+            if(!passwordsCorrect(pswContrasena.getText().trim(),pswConfirmarContrasena.getText().trim()) && pswConfirmarContrasena.getText().trim().length()>=3 && pswContrasena.getText().trim().length()>=3)
+                lblConfirmarContrasena.setTextFill(Color.web("red"));
+            else
+                lblConfirmarContrasena.setTextFill(Color.web("black"));
             btnRegistrar.setDisable(true);
+        }
     }
     /**
      * Comprobacion del formato del Email.
