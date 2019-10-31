@@ -153,7 +153,7 @@ public class RegistrarseFXMLController{
         btnCancelar.setOnKeyPressed(this::keyPressCancelar);
         //textos de ayuda promptext
         txtNombre.setPromptText("ej. Aitor Sanchez");
-        txtNombreUsuario.setPromptText("ej. Aitor_89");
+        txtNombreUsuario.setPromptText("Min. 3 caracteres");
         txtEmail.setPromptText("ej. Aitor_Sanchez@algo.com");
         pswContrasena.setPromptText("Min. 3 caracteres");
         pswConfirmarContrasena.setPromptText("Min. 3 caracteres");
@@ -199,7 +199,7 @@ public class RegistrarseFXMLController{
         if(pswConfirmarContrasena.getText().length()>15 && pswConfirmarContrasena.isFocused())
             pswConfirmarContrasena.setText(newValue.trim().substring(0,15));
         //Comprobacion de que todos los campos esten habilitados.
-        if(!txtNombre.getText().trim().isEmpty() && !txtNombreUsuario.getText().trim().isEmpty()
+        if(!txtNombre.getText().trim().isEmpty() && !(txtNombreUsuario.getText().trim().length()<3)
                 && !txtEmail.getText().trim().isEmpty() && !pswContrasena.getText().trim().isEmpty()
                 && !pswConfirmarContrasena.getText().trim().isEmpty()
                 && passwordsCorrect(pswContrasena.getText().trim(),pswConfirmarContrasena.getText().trim())){

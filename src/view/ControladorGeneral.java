@@ -15,7 +15,7 @@ import javafx.scene.control.ButtonType;
 public class ControladorGeneral {
     
     public final static int MIN_CARACTERES = 3;
-    public final static int MAX_CARACTERES = 255;
+    public final static int MAX_CARACTERES = 15;
     
     public static void showErrorAlert(String mensaje){
         Alert alert=new Alert(Alert.AlertType.ERROR,
