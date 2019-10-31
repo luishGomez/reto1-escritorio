@@ -33,27 +33,11 @@ public class PrincipalFXController {
     @FXML
     private MenuBar menuBar;
     @FXML
-    private Menu menuArchivo;
+    private Menu menuOpciones;
     @FXML
-    private MenuItem menuArchivoGuardar;
+    private MenuItem menuOpcionesSalir;
     @FXML
-    private MenuItem menuArchivoSubir;
-    @FXML
-    private MenuItem menuArchivoSalir;
-    @FXML
-    private Menu menuEditar;
-    @FXML
-    private MenuItem menuEditarBorrar;
-    @FXML
-    private Menu menuCuenta;
-    @FXML
-    private MenuItem menuCuentaDatos;
-    @FXML
-    private MenuItem menuCuentaCerrarSesion;
-    @FXML
-    private Menu menuHelp;
-    @FXML
-    private MenuItem menuHelpLanguages;
+    private MenuItem menuOpcionesCerrarSesion;
     @FXML
     private Label lblBienvenida;
     @FXML
@@ -78,6 +62,8 @@ public class PrincipalFXController {
             stage.setMaximized(true);
             //Vamos a rellenar los datos en la ventana.
             stage.setOnShowing(this::handleWindowShowing);
+            menuOpciones.setMnemonicParsing(true);
+            menuOpciones.setText("_Opciones");
             stage.show();
         }catch(Exception e){
             LOGGER.severe(e.getMessage());

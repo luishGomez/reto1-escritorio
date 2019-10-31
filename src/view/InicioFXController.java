@@ -20,11 +20,13 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -44,6 +46,10 @@ public class InicioFXController extends ControladorGeneral{
     private Button btnAcceder;
     @FXML
     private Button btnSalir;
+    @FXML
+    private Label lblNombreUsuario;
+    @FXML
+    private Label lblContra;
     
     private Stage stage;
     public LogicCliente logic = new LogicFactory().getLogicCliente();
@@ -63,11 +69,14 @@ public class InicioFXController extends ControladorGeneral{
         //Add Listener
         tfNombreUsuario.textProperty().addListener(this::textChanged);
         tfContra.textProperty().addListener(this::textChanged);
-        tfNombreUsuario.setOnKeyPressed(this::keyPress);
-        tfContra.setOnKeyPressed(this::keyPress);
+        tfNombreUsuario.setOnKeyPressed(this::keyPressLogin);
+        tfContra.setOnKeyPressed(this::keyPressLogin);
         btnRegistrar.setOnAction(this::btnRegistrarOnClick);
+        btnRegistrar.setOnKeyPressed(this::keyPressRegistrar);
         btnAcceder.setOnAction(this::btnLoginOnClick);
+        btnAcceder.setOnKeyPressed(this::keyPressLogin);
         btnSalir.setOnAction(this::btnSalirOnClick);
+        btnSalir.setOnKeyPressed(this::keyPressSalir);
         stage.show();
     }
     /**
@@ -117,9 +126,26 @@ public class InicioFXController extends ControladorGeneral{
         }
     }
     
-    private void keyPress(KeyEvent key){
+    private void keyPressLogin(KeyEvent key){
         if(key.getCode().equals(KeyCode.ENTER)) {
             btnAcceder.fire();
+        }else if(key.getCode().equals(KeyCode.ESCAPE)){
+            btnSalir.fire();
+        }
+    }
+    
+    private void keyPressRegistrar(KeyEvent key){
+        if(key.getCode().equals(KeyCode.ENTER)) {
+            btnRegistrar.fire();
+        }else if(key.getCode().equals(KeyCode.ESCAPE)){
+            btnSalir.fire();
+        }
+    }
+    private void keyPressSalir(KeyEvent key){
+        if(key.getCode().equals(KeyCode.ENTER)) {
+            btnSalir.fire();
+        }else if(key.getCode().equals(KeyCode.ESCAPE)){
+            btnSalir.fire();
         }
     }
     /**
@@ -127,8 +153,7 @@ public class InicioFXController extends ControladorGeneral{
      * @param event
      */
     private void btnRegistrarOnClick(ActionEvent event) {
-        tfNombreUsuario.setText("");
-        tfContra.setText("");
+        
         try {
         FXMLLoader loader = new FXMLLoader(getClass()
         .getResource("Registrarse.fxml"));
@@ -153,6 +178,8 @@ public class InicioFXController extends ControladorGeneral{
         try{
             User user = logic.login(nombre, contra);
             if(user != null){
+                lblNombreUsuario.setTextFill(Color.web("black"));
+                lblContra.setTextFill(Color.web("black"));
                 try{
                     FXMLLoader loader = new FXMLLoader(getClass()
                             .getResource("principal.fxml"));
@@ -171,11 +198,12 @@ public class InicioFXController extends ControladorGeneral{
             }
         }catch(PasswordException e){
             showErrorAlert("Contraseña incorrecta.");
-            tfContra.setText("");
+            lblContra.setTextFill(Color.web("red"));
+            lblNombreUsuario.setTextFill(Color.web("black"));
         }catch(LoginIDException e){
             showErrorAlert("Nombre de usuario incorrecto.");
-            tfContra.setText("");
-            tfNombreUsuario.setText("");
+            lblContra.setTextFill(Color.web("red"));
+            lblNombreUsuario.setTextFill(Color.web("red"));
         }catch(DAOException e){
             showErrorAlert("Ha ocurrido un error en el servidor, intentelo otra vez o vuelva mas tarde.");
         }catch(ServerException e){

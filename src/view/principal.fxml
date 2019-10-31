@@ -13,43 +13,26 @@
    <top>
       <MenuBar fx:id="menuBar" BorderPane.alignment="CENTER">
         <menus>
-          <Menu fx:id="menuArchivo" mnemonicParsing="false" text="Archivo">
+          <Menu fx:id="menuOpciones" mnemonicParsing="false" text="Opciones">
             <items>
-              <MenuItem fx:id="menuArchivoGuardar" mnemonicParsing="false" text="Guardar" />
-                  <MenuItem fx:id="menuArchivoSubir" mnemonicParsing="false" text="Subir archivo" />
-                  <MenuItem fx:id="menuArchivoSalir" mnemonicParsing="false" onAction="#onActionSalir" text="Salir" />
+              <MenuItem fx:id="menuOpcionesSalir" mnemonicParsing="false" onAction="#onActionSalir" text="Salir" />
+              <MenuItem fx:id="menuOpcionesCerrarSesion" mnemonicParsing="false" onAction="#onActionCerrarSesion" text="Cerrar sesión" />
             </items>
           </Menu>
-          <Menu fx:id="menuEditar" mnemonicParsing="false" text="Editar">
-            <items>
-              <MenuItem fx:id="menuEditarBorrar" mnemonicParsing="false" text="Borrar" />
-            </items>
-          </Menu>
-            <Menu fx:id="menuCuenta" mnemonicParsing="false" text="Cuenta">
-              <items>
-                <MenuItem fx:id="menuCuentaDatos" mnemonicParsing="false" text="Datos de la cuenta" />
-                  <MenuItem fx:id="menuCuentaCerrarSesion" mnemonicParsing="false" onAction="#onActionCerrarSesion" text="Cerrar sesión" />
-              </items>
-            </Menu>
-            <Menu fx:id="menuHelp" mnemonicParsing="false" text="Help">
-               <items>
-                  <MenuItem fx:id="menuHelpLanguages" mnemonicParsing="false" text="Languages" />
-               </items>
-            </Menu>
         </menus>
       </MenuBar>
    </top>
    <left>
-      <VBox prefHeight="349.0" prefWidth="142.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="374.0" prefWidth="222.0" BorderPane.alignment="CENTER">
          <children>
             <VBox fx:id="vBoxLeft" prefHeight="174.0" prefWidth="129.0">
                <children>
-                  <Label fx:id="lblBienvenida" text="Bienvenido &lt;nombre&gt;">
+                  <Label fx:id="lblBienvenida" prefWidth="220" text="Bienvenido &lt;nombre&gt;">
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin>
                   </Label>
-                  <Label fx:id="lblEmail" text="&lt;email&gt;" />
+                  <Label fx:id="lblEmail" prefWidth="220" text="&lt;email&gt;" />
                </children>
             </VBox>
          </children></VBox>

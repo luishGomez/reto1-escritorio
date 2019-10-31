@@ -16,6 +16,7 @@ import exceptions.LogicException;
 import exceptions.LoginIDException;
 import exceptions.ServerException;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -24,10 +25,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -62,8 +66,6 @@ public class RegistrarseFXMLController{
     private Button btnCancelar;
     @FXML
     private Button btnRegistrar;
-    @FXML
-    private Label lblNombreDeLogo;
     @FXML
     private Label lblNombre;
     @FXML
@@ -100,7 +102,7 @@ public class RegistrarseFXMLController{
                 }
             }catch(LoginIDException e){
                 //modificar mas adelante
-                showErrorAlert("Ese ide ya existe");
+                showErrorAlert("El nombre de usuario ya existe");
             }catch(DAOException e){
                 showErrorAlert("Ha ocurrido un error en el servidor, intentelo otra vez o vuelva mas tarde.");
             }catch(ServerException e){
@@ -136,19 +138,26 @@ public class RegistrarseFXMLController{
         //anadimos controladores.
         stage.setOnShowing(this::HandleWindowShowing);
         txtNombre.textProperty().addListener(this::HandleTextChanged);
+        txtNombre.setOnKeyPressed(this::keyPressRegistrar);
         txtNombreUsuario.textProperty().addListener(this::HandleTextChanged);
+        txtNombreUsuario.setOnKeyPressed(this::keyPressRegistrar);
         txtEmail.textProperty().addListener(this::HandleTextChanged);
+        txtEmail.setOnKeyPressed(this::keyPressRegistrar);
         //txtEmail.focusedProperty().addListener(this::focusChanged);
         pswContrasena.textProperty().addListener(this::HandleTextChanged);
+        pswContrasena.setOnKeyPressed(this::keyPressRegistrar);
         pswConfirmarContrasena.textProperty().addListener(this::HandleTextChanged);
+        pswConfirmarContrasena.setOnKeyPressed(this::keyPressRegistrar);
         //tooltips de ayuda para los botones
         btnCancelar.setTooltip(new Tooltip("Regresar al login"));
+        btnCancelar.setOnKeyPressed(this::keyPressCancelar);
         //textos de ayuda promptext
         txtNombre.setPromptText("ej. Aitor Sanchez");
         txtNombreUsuario.setPromptText("ej. Aitor_89");
         txtEmail.setPromptText("ej. Aitor_Sanchez@algo.com");
-        pswContrasena.setPromptText("Contrasena");
-        pswConfirmarContrasena.setPromptText("Confirmar");
+        pswContrasena.setPromptText("Min. 3 caracteres");
+        pswConfirmarContrasena.setPromptText("Min. 3 caracteres");
+        btnRegistrar.setOnKeyPressed(this::keyPressRegistrar);
         //Mostrar ventana
         stage.show();
     }
@@ -194,11 +203,12 @@ public class RegistrarseFXMLController{
                 && !txtEmail.getText().trim().isEmpty() && !pswContrasena.getText().trim().isEmpty()
                 && !pswConfirmarContrasena.getText().trim().isEmpty()
                 && passwordsCorrect(pswContrasena.getText().trim(),pswConfirmarContrasena.getText().trim())){
+            lblConfirmarContrasena.setTextFill(Color.web("black"));
             btnRegistrar.setDisable(false);
         }else{
-            if(!passwordsCorrect(pswContrasena.getText().trim(),pswConfirmarContrasena.getText().trim()) && pswConfirmarContrasena.getText().trim().length()>=3 && pswContrasena.getText().trim().length()>=3)
+            if(!passwordsCorrect(pswContrasena.getText().trim(),pswConfirmarContrasena.getText().trim()) && pswConfirmarContrasena.getText().trim().length()>=3 && pswContrasena.getText().trim().length()>=3){
                 lblConfirmarContrasena.setTextFill(Color.web("red"));
-            else
+            }else
                 lblConfirmarContrasena.setTextFill(Color.web("black"));
             btnRegistrar.setDisable(true);
         }
@@ -292,5 +302,44 @@ public class RegistrarseFXMLController{
         
     }
     
-    
+    private void keyPressRegistrar(KeyEvent key){
+        if(key.getCode().equals(KeyCode.ENTER)) {
+            if(!txtNombre.getText().trim().isEmpty() && !txtNombreUsuario.getText().trim().isEmpty()
+                    && !txtEmail.getText().trim().isEmpty() && !pswContrasena.getText().trim().isEmpty()
+                    && !pswConfirmarContrasena.getText().trim().isEmpty()
+                    && passwordsCorrect(pswContrasena.getText().trim(),pswConfirmarContrasena.getText().trim()))
+                btnRegistrar.fire();
+        }else if(key.getCode().equals(KeyCode.ESCAPE)){
+            String mensaje = "¿Estás seguro de cancelar su registro? Si lo haces se borraran todos los campos.";
+            Alert alertCerrarAplicacion = new Alert(AlertType.CONFIRMATION,mensaje,ButtonType.NO,ButtonType.YES);
+            //Añadimos titulo a la ventana como el alert.
+            alertCerrarAplicacion.setTitle("Cancelar registro.");
+            alertCerrarAplicacion.setHeaderText("¿Quieres cancelar registro?");
+            //Si acepta cerrara la aplicación.
+            alertCerrarAplicacion.showAndWait().ifPresent(response -> {
+                if (response == ButtonType.YES) {
+                    btnCancelar.fire();
+                }
+            });
+        }
+    }
+    private void keyPressCancelar(KeyEvent key){
+        if(key.getCode().equals(KeyCode.ENTER)) {
+            btnCancelar.fire();
+        }else if(key.getCode().equals(KeyCode.ESCAPE)){
+            String mensaje = "¿Estás seguro de cancelar su registro? Si lo haces se borraran todos los campos.";
+            Alert alertCerrarAplicacion = new Alert(AlertType.CONFIRMATION,mensaje,ButtonType.NO,ButtonType.YES);
+            //Añadimos titulo a la ventana como el alert.
+            alertCerrarAplicacion.setTitle("Cancelar registro.");
+            alertCerrarAplicacion.setHeaderText("¿Quieres cancelar registro?");
+            //Si acepta cerrara la aplicación.
+            alertCerrarAplicacion.showAndWait().ifPresent(response -> {
+                if (response == ButtonType.YES) {
+                    btnCancelar.fire();
+                }
+            });
+        }
+    }
 }
+
+
