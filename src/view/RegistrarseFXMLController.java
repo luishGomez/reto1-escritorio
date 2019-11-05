@@ -61,8 +61,6 @@ public class RegistrarseFXMLController{
     @FXML
     private PasswordField pswConfirmarContrasena;
     @FXML
-    private Label lblMostrarContrasena;
-    @FXML
     private Button btnCancelar;
     @FXML
     private Button btnRegistrar;
@@ -76,11 +74,21 @@ public class RegistrarseFXMLController{
     private Label lblContrasena;
     @FXML
     private Label lblConfirmarContrasena;
-    
+    /**
+     * Retorna a la ventana anterior.
+     * Returns to the previous window.
+     * @param event El evento en cuestión. / The event.
+     */
     @FXML
     private void btnVolver(ActionEvent event){
         stage.hide();
     }
+    
+    /**
+     * Comprueba los campos y registra al usuario si es todo correcto.
+     * Check the fields and register the user if everything is correct.
+     * @param event  El evento en cuestión. / The event.
+     */
     @FXML
     private void btnRegistrar(ActionEvent event){
         user.setEmail(txtEmail.getText().trim());
@@ -101,7 +109,6 @@ public class RegistrarseFXMLController{
                     stage.hide();
                 }
             }catch(LoginIDException e){
-                //modificar mas adelante
                 showErrorAlert("El nombre de usuario ya existe");
             }catch(DAOException e){
                 showErrorAlert("Ha ocurrido un error en el servidor, intentelo otra vez o vuelva mas tarde.");
@@ -121,7 +128,8 @@ public class RegistrarseFXMLController{
     }
     /**
      * Iniciamos el stage con la scena y su parent respectivo.
-     * @param root
+     * Initialize the stage with the respective parent.
+     * @param root El parent / The parent.
      */
     public void initStage(Parent root){
         //Crear scena y stage
@@ -143,7 +151,6 @@ public class RegistrarseFXMLController{
         txtNombreUsuario.setOnKeyPressed(this::keyPressRegistrar);
         txtEmail.textProperty().addListener(this::HandleTextChanged);
         txtEmail.setOnKeyPressed(this::keyPressRegistrar);
-        //txtEmail.focusedProperty().addListener(this::focusChanged);
         pswContrasena.textProperty().addListener(this::HandleTextChanged);
         pswContrasena.setOnKeyPressed(this::keyPressRegistrar);
         pswConfirmarContrasena.textProperty().addListener(this::HandleTextChanged);
@@ -162,7 +169,8 @@ public class RegistrarseFXMLController{
         stage.show();
     }
     /**
-     * Configuracion del inicio de la ventana.
+     * Configuración del inicio de la ventana.
+     * Configuration of the window start.
      * @param e
      */
     private void HandleWindowShowing(WindowEvent e){
