@@ -1,8 +1,3 @@
-/*
-* To change this license header, choose License Headers in Project Properties.
-* To change this template file, choose Tools | Templates
-* and open the template in the editor.
-*/
 package view;
 
 import clases.User;
@@ -45,9 +40,9 @@ public class PrincipalFXController {
     
     
     /**
-     * Inicializa en escenario para la vista.
-     * Initialize the stage of the view.
-     * @param root La vista principal.fxml ya cargada.
+     * Función que muestra nuestra escena en el stage.
+     * Function that shows our scene in the stage.
+     * @param root El nodo raíz de la vista. / The root node of view.
      */
     @FXML
     public void initStage(Parent root) {

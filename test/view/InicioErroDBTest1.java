@@ -17,23 +17,14 @@ import static org.testfx.matcher.base.NodeMatchers.isVisible;
  *
  * @author 2dam
  */
-public class InicioErrorsTest extends ApplicationTest{
-    public InicioErrorsTest() {
+public class InicioErroDBTest1 extends ApplicationTest{
+    public InicioErroDBTest1() {
     }
     @Override
     public void start(Stage stage) throws Exception{
         new EscritorioR1().start(stage);
     }
     @Test
-    public void testSinServidor(){
-        write("1234");
-        push(KeyCode.TAB);
-        write("123");
-        push(KeyCode.ENTER);
-        verifyThat("Problemas con el servidor, intentelo en un rato.",isVisible());
-        push(KeyCode.ENTER);
-    }
-    
     public void testSinBaseDeDatos(){
         write("1234");
         push(KeyCode.TAB);

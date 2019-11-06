@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package escritorior1;
 
 import java.io.IOException;
@@ -15,7 +10,8 @@ import view.InicioFXController;
 
 
 /**
- *
+ * La clase de inicio de la aplicación que inicia la primera ventana.
+ * The start class of the application that starts the first window.
  * @author Luis
  */
 public class EscritorioR1 extends javafx.application.Application {
@@ -23,7 +19,7 @@ public class EscritorioR1 extends javafx.application.Application {
     @Override
     public void start(Stage stage) {
         try{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/inicio.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/inicio.fxml"));
 
             Parent root = (Parent)loader.load();
 

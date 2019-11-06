@@ -44,6 +44,12 @@ import static view.ControladorGeneral.showErrorAlert;
  */
 public class RegistrarseFXMLController{
     private static final Logger LOGGER = Logger.getLogger("reto1_escritorio.view.Registro");
+        private final String CONTRASENA_MENSAJE_DEFAULT="Confirmar contraseña";
+    private final String EMAIL_MENSAJE_DEFAULT="Email";
+    private final String EMAIL_MENSAJE_ERROR="EMAIL ERRONEO";
+    private final String CONTRASENA_MENSAJE_ERROR="CONTRASEÑAS ERRONEAS";
+
+
     private Stage stage;
     private User user=new User();
     
@@ -63,7 +69,7 @@ public class RegistrarseFXMLController{
     @FXML
     private Button btnCancelar;
     @FXML
-    private Button btnRegistrar;
+    private Button btnRegistrar2;
     @FXML
     private Label lblNombre;
     @FXML
@@ -74,10 +80,11 @@ public class RegistrarseFXMLController{
     private Label lblContrasena;
     @FXML
     private Label lblConfirmarContrasena;
+    
     /**
      * Retorna a la ventana anterior.
      * Returns to the previous window.
-     * @param event El evento en cuestión. / The event.
+     * @param event El evento en cuestión. / The current event.
      */
     @FXML
     private void btnVolver(ActionEvent event){
@@ -87,7 +94,7 @@ public class RegistrarseFXMLController{
     /**
      * Comprueba los campos y registra al usuario si es todo correcto.
      * Check the fields and register the user if everything is correct.
-     * @param event  El evento en cuestión. / The event.
+     * @param event  El evento en cuestión. / The current event.
      */
     @FXML
     private void btnRegistrar(ActionEvent event){
@@ -96,10 +103,12 @@ public class RegistrarseFXMLController{
         user.setLogin(txtNombreUsuario.getText());
         user.setPassword(pswContrasena.getText());
         
-        if(!esEmail(txtEmail.getText().trim()))
+        if(!esEmail(txtEmail.getText().trim())){
             lblEmail.setTextFill(Color.web("red"));
-        else{
+        lblEmail.setText(EMAIL_MENSAJE_ERROR);
+        }else{
             lblEmail.setTextFill(Color.web("black"));
+            lblEmail.setText(EMAIL_MENSAJE_DEFAULT);
             try{
                 if(logic.registro(user)){
                     Alert alert=new Alert(AlertType.INFORMATION);
@@ -109,7 +118,7 @@ public class RegistrarseFXMLController{
                     stage.hide();
                 }
             }catch(LoginIDException e){
-                showErrorAlert("El nombre de usuario ya existe");
+                showErrorAlert("El nombre de usuario ya existe.");
             }catch(DAOException e){
                 showErrorAlert("Ha ocurrido un error en el servidor, intentelo otra vez o vuelva mas tarde.");
             }catch(ServerException e){
@@ -127,9 +136,9 @@ public class RegistrarseFXMLController{
         this.user = user;
     }
     /**
-     * Iniciamos el stage con la scena y su parent respectivo.
-     * Initialize the stage with the respective parent.
-     * @param root El parent / The parent.
+     * Función que muestra nuestra escena en el stage.
+     * Function that shows our scene in the stage.
+     * @param root El nodo raíz de la vista. / The root node of view.
      */
     public void initStage(Parent root){
         //Crear scena y stage
@@ -164,22 +173,23 @@ public class RegistrarseFXMLController{
         txtEmail.setPromptText("ej. Aitor_Sanchez@algo.com");
         pswContrasena.setPromptText("Min. 3 caracteres");
         pswConfirmarContrasena.setPromptText("Min. 3 caracteres");
-        btnRegistrar.setOnKeyPressed(this::keyPressRegistrar);
+        btnRegistrar2.setOnKeyPressed(this::keyPressRegistrar);
         //Mostrar ventana
         stage.show();
     }
     /**
      * Configuración del inicio de la ventana.
      * Configuration of the window start.
-     * @param e
+     * @param e El propio evento. / The current event.
      */
     private void HandleWindowShowing(WindowEvent e){
         //boton registrar desabilitado
-        btnRegistrar.setDisable(true);
+        btnRegistrar2.setDisable(true);
         
     }
     /**
      * Controlador de eventos de cambio de texto.
+     * The controller of the changed text.
      * @param e
      * @param newValue
      * @param oldValue
@@ -212,13 +222,16 @@ public class RegistrarseFXMLController{
                 && !pswConfirmarContrasena.getText().trim().isEmpty()
                 && passwordsCorrect(pswContrasena.getText().trim(),pswConfirmarContrasena.getText().trim())){
             lblConfirmarContrasena.setTextFill(Color.web("black"));
-            btnRegistrar.setDisable(false);
+            btnRegistrar2.setDisable(false);
         }else{
             if(!passwordsCorrect(pswContrasena.getText().trim(),pswConfirmarContrasena.getText().trim()) && pswConfirmarContrasena.getText().trim().length()>=3 && pswContrasena.getText().trim().length()>=3){
                 lblConfirmarContrasena.setTextFill(Color.web("red"));
-            }else
+                lblConfirmarContrasena.setText(CONTRASENA_MENSAJE_ERROR);
+            }else{
                 lblConfirmarContrasena.setTextFill(Color.web("black"));
-            btnRegistrar.setDisable(true);
+                lblConfirmarContrasena.setText(CONTRASENA_MENSAJE_DEFAULT);
+            }
+            btnRegistrar2.setDisable(true);
         }
     }
     /**
@@ -245,9 +258,11 @@ public class RegistrarseFXMLController{
         return resu;
     }
     /**
-     * Comprobar primera parte del email (anterior al "@")
-     * @param cadena.
-     * @return true si es correcto.
+     * Comprobar primera parte del email (anterior al "@").
+     * Check first part of email (before the ".").
+     * @param cadena. El trozo de email | The email part.
+     * @return True si esta correcto |False en todo los demás casos. / True if 
+     * correct | False in all other cases.
      */
     private  boolean isEmailFirstPart(String cadena) {
         boolean resu=true;
@@ -261,8 +276,10 @@ public class RegistrarseFXMLController{
     }
     /**
      * Comprobar segunda parte del email (despues del "@" y antes del punto).
-     * @param cadena.
-     * @return true si es correcto.
+     * Check second part of email (After the "@" and before the ".").
+     * @param cadena. El trozo de email | The email part.
+     * @return True si esta correcto |False en todo los demás casos. / True if 
+     * correct | False in all other cases.
      */
     private  boolean isEmailSecondPart(String cadena) {
         boolean resu=true;
@@ -276,8 +293,10 @@ public class RegistrarseFXMLController{
     }
     /**
      * Comprobar tercera parte del email (despues del ".").
-     * @param cadena.
-     * @return true si esta correcto.
+     * Check third part of email (After the ".")
+     * @param cadena. El trozo de email | The email part.
+     * @return True si esta correcto |False en todo los demás casos. / True if 
+     * correct | False in all other cases.
      */
     private  boolean isEmailThridPart(String cadena) {
         boolean resu=true;
@@ -290,10 +309,15 @@ public class RegistrarseFXMLController{
         return resu;
     }
     /**
-     * Comprobar que contrasena y confirmarContrasena sean identicos y cumplan el max tamaño de acuerdo a la base de datos.
-     * @param contrasena.
-     * @param contrasenaConfirmacion.
-     * @return true si esta correcto.
+     * Comprobar que contrasena y confirmarContrasena sean idénticos y cumplan 
+     * el max tamaño de acuerdo a la base de datos.
+     * Check that contrasena and confirfarContrasena are equals and have
+     * the max size according to the database.
+     * @param contrasena. La contraseña. / The password
+     * @param contrasenaConfirmacion. La contraseña repetida. / Thre password 
+     * repeated.
+     * @return True si esta correcto | False en todo los demás casos. /
+     * True if correct | False in all other cases.
      */
     public boolean passwordsCorrect(String contrasena,String contrasenaConfirmacion){
         boolean resultado=true;
@@ -309,14 +333,18 @@ public class RegistrarseFXMLController{
         return resultado;
         
     }
-    
+    /**
+     * Atajo para registrarse.
+     * Shortcut to sign up.
+     * @param key 
+     */
     private void keyPressRegistrar(KeyEvent key){
         if(key.getCode().equals(KeyCode.ENTER)) {
             if(!txtNombre.getText().trim().isEmpty() && !txtNombreUsuario.getText().trim().isEmpty()
                     && !txtEmail.getText().trim().isEmpty() && !pswContrasena.getText().trim().isEmpty()
                     && !pswConfirmarContrasena.getText().trim().isEmpty()
                     && passwordsCorrect(pswContrasena.getText().trim(),pswConfirmarContrasena.getText().trim()))
-                btnRegistrar.fire();
+                btnRegistrar2.fire();
         }else if(key.getCode().equals(KeyCode.ESCAPE)){
             String mensaje = "¿Estás seguro de cancelar su registro? Si lo haces se borraran todos los campos.";
             Alert alertCerrarAplicacion = new Alert(AlertType.CONFIRMATION,mensaje,ButtonType.NO,ButtonType.YES);
@@ -331,6 +359,11 @@ public class RegistrarseFXMLController{
             });
         }
     }
+    /**
+     * Atajo para cancelar el registro.
+     * Shortcut to cancel te sign up.
+     * @param key 
+     */
     private void keyPressCancelar(KeyEvent key){
         if(key.getCode().equals(KeyCode.ENTER)) {
             btnCancelar.fire();

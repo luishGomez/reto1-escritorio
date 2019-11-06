@@ -1,8 +1,3 @@
-/*
-* To change this license header, choose License Headers in Project Properties.
-* To change this template file, choose Tools | Templates
-* and open the template in the editor.
-*/
 package view;
 
 import businessLogic.*;
@@ -31,7 +26,8 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 /**
- *
+ * El controlador de la ventana InicioFx para iniciar sesión.
+ * The Iniciofx window controller to log in.
  * @author Luis
  */
 public class InicioFXController extends ControladorGeneral{
@@ -58,8 +54,9 @@ public class InicioFXController extends ControladorGeneral{
         this.stage = stage;
     }
     /**
-     * Función que muestra nuestra escena en el stage
-     * @param root
+     * Función que muestra nuestra escena en el stage.
+     * Function that shows our scene in the stage.
+     * @param root El nodo raíz de la vista. / The root node of view.
      */
     public void initStage(Parent root){
         Scene scene = new Scene(root);
@@ -81,7 +78,8 @@ public class InicioFXController extends ControladorGeneral{
     }
     /**
      * Añade las propiedades a los controladores de la escena.
-     * @param w
+     * Adds properties to the scene drivers.
+     * @param w El propio evento. / The current event.
      */
     private void handleWindowShowing(WindowEvent w){
         //El botón Iniciar sesión estarán deshabilitado.
@@ -99,7 +97,8 @@ public class InicioFXController extends ControladorGeneral{
         stage.setResizable(false);
     }
     /**
-     * Comprueba que los controladores label esten bien informados.
+     * Comprueba que los controladores label estén bien informados.
+     * Check that label controllers are well informed.
      * @param observable
      * @param oldValue
      * @param newValue
@@ -125,7 +124,11 @@ public class InicioFXController extends ControladorGeneral{
             showErrorAlert("Has superado el máximo tamaño de contraseña, "+MAX_CARACTERES+".");
         }
     }
-    
+    /**
+     * Atajo para iniciar sesión.
+     * Shortcut to log in.
+     * @param key 
+     */
     private void keyPressLogin(KeyEvent key){
         if(key.getCode().equals(KeyCode.ENTER)) {
             btnAcceder.fire();
@@ -133,7 +136,11 @@ public class InicioFXController extends ControladorGeneral{
             btnSalir.fire();
         }
     }
-    
+    /**
+     * Atajo para registrase.
+     * Shortcut to sign up.
+     * @param key 
+     */
     private void keyPressRegistrar(KeyEvent key){
         if(key.getCode().equals(KeyCode.ENTER)) {
             btnRegistrar.fire();
@@ -141,6 +148,11 @@ public class InicioFXController extends ControladorGeneral{
             btnSalir.fire();
         }
     }
+    /**
+     * Atajo para salir de la aplicación.
+     * Shortcut to exit from the application.
+     * @param key 
+     */
     private void keyPressSalir(KeyEvent key){
         if(key.getCode().equals(KeyCode.ENTER)) {
             btnSalir.fire();
@@ -150,7 +162,8 @@ public class InicioFXController extends ControladorGeneral{
     }
     /**
      * Acción activada por el botón Registrar. Muestra la ventana Registrar.
-     * @param event
+     * Action enabled by the Register button. Displays the Register window.
+     * @param event El propio evento. / The current event.
      */
     private void btnRegistrarOnClick(ActionEvent event) {
         
@@ -169,8 +182,9 @@ public class InicioFXController extends ControladorGeneral{
         }
     }
     /**
-     *
-     * @param event
+     * Comprobación de Login y Password y inicio de sesión.
+     * Login and Password check and login.
+     * @param event El propio evento. / The current event.
      */
     private void btnLoginOnClick(ActionEvent event){
         String nombre = tfNombreUsuario.getText().toString();
@@ -214,7 +228,11 @@ public class InicioFXController extends ControladorGeneral{
             showErrorAlert("El servidor no se encuentra disponible en estos momentos.");
         }
     }
-    
+    /**
+     * Botón para salir de la aplicación.
+     * Button to exit the application.
+     * @param event El propio evento. / The current event.
+     */
     public void btnSalirOnClick(ActionEvent event){
         String mensaje = "¿Estás seguro de que desea cerrar la aplicación?";
         Alert alertCerrarAplicacion = new Alert(AlertType.CONFIRMATION,mensaje,ButtonType.NO,ButtonType.YES);
