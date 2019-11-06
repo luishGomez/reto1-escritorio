@@ -1,8 +1,3 @@
-/*
-* To change this license header, choose License Headers in Project Properties.
-* To change this template file, choose Tools | Templates
-* and open the template in the editor.
-*/
 package view;
 
 import escritorior1.EscritorioR1;
@@ -15,8 +10,9 @@ import static org.testfx.matcher.base.NodeMatchers.isDisabled;
 import static org.testfx.matcher.base.NodeMatchers.isEnabled;
 import static org.testfx.matcher.base.NodeMatchers.isNotNull;
 /**
- *
- * @author 2dam
+ * Test que comprueba que el la ventana principal funcione bien.
+ * Test that checks that the principal window works well.
+ * @author Ricardo Peinado Lastra
  */
 public class PrincipalFXControllerIT extends ApplicationTest  {
     

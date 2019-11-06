@@ -1,8 +1,3 @@
-/*
-* To change this license header, choose License Headers in Project Properties.
-* To change this template file, choose Tools | Templates
-* and open the template in the editor.
-*/
 package view;
 
 
@@ -39,12 +34,13 @@ import javafx.stage.WindowEvent;
 import static view.ControladorGeneral.showErrorAlert;
 
 /**
- *
+ * El controlador de la ventana RegistrarseFX para registrar nuevo usuario.
+ * The controller of the Registrarsefx window to sign up new user.
  * @author sergio
  */
 public class RegistrarseFXMLController{
     private static final Logger LOGGER = Logger.getLogger("reto1_escritorio.view.Registro");
-        private final String CONTRASENA_MENSAJE_DEFAULT="Confirmar contraseña";
+    private final String CONTRASENA_MENSAJE_DEFAULT="Confirmar contraseña";
     private final String EMAIL_MENSAJE_DEFAULT="Email";
     private final String EMAIL_MENSAJE_ERROR="EMAIL ERRONEO";
     private final String CONTRASENA_MENSAJE_ERROR="CONTRASEÑAS ERRONEAS";
@@ -191,7 +187,7 @@ public class RegistrarseFXMLController{
      * Controlador de eventos de cambio de texto.
      * The controller of the changed text.
      * @param e
-     * @param newValue
+     * @param newValue 
      * @param oldValue
      */
     private void HandleTextChanged(ObservableValue e, String newValue ,String oldValue){
@@ -235,9 +231,11 @@ public class RegistrarseFXMLController{
         }
     }
     /**
-     * Comprobacion del formato del Email.
-     * @param email
-     * @return  true si el email es correcto
+     * Comprobación del formato del Email.
+     * Verification of the email format.
+     * @param email El propio email. / The current emai.
+     * @return  True si el email es correcto | False en los demas casos /
+     * True if correct | False in the other cases.
      */
     private  boolean esEmail(String email) {
         boolean resu=true;

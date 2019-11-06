@@ -1,20 +1,9 @@
-/*
-* To change this license header, choose License Headers in Project Properties.
-* To change this template file, choose Tools | Templates
-* and open the template in the editor.
-*/
 package view;
 
 import escritorior1.EscritorioR1;
-import java.util.Arrays;
-import java.util.Collection;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import org.junit.Test;
-import static org.junit.Assert.*;
-import org.junit.Before;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 import static org.testfx.api.FxAssert.verifyThat;
 import org.testfx.framework.junit.ApplicationTest;
 import static org.testfx.matcher.base.NodeMatchers.isDisabled;
@@ -22,8 +11,8 @@ import static org.testfx.matcher.base.NodeMatchers.isNotNull;
 import static org.testfx.matcher.base.NodeMatchers.isVisible;
 
 /**
- *
- * @author 2dam
+ * Test que comprueba el inicio de la aplicación.
+ * @author Ricardo Peinado Lastra
  */
 public class InicioFXControllerIT extends ApplicationTest {
     

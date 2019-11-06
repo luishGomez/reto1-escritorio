@@ -1,8 +1,3 @@
-/*
-* To change this license header, choose License Headers in Project Properties.
-* To change this template file, choose Tools | Templates
-* and open the template in the editor.
-*/
 package view;
 
 import escritorior1.EscritorioR1;
@@ -14,8 +9,9 @@ import org.testfx.framework.junit.ApplicationTest;
 import static org.testfx.matcher.base.NodeMatchers.isVisible;
 
 /**
- *
- * @author 2dam
+ * Test que comprueba en caso de no estar la bases de datos activa.
+ * Test that checks in case the database is not active.
+ * @author Ricardo Peinado Lastra
  */
 public class InicioErroDBTest1 extends ApplicationTest{
     public InicioErroDBTest1() {

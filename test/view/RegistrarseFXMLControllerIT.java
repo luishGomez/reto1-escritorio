@@ -15,7 +15,8 @@ import org.junit.runners.MethodSorters;
 import static org.testfx.matcher.base.NodeMatchers.isVisible;
 
 /**
- *
+ * Test que prueba la ventana registrar.
+ * Test that test window register.
  * @author Sergio 
  */
 

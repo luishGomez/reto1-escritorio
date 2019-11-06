@@ -10,7 +10,8 @@ import org.junit.Test;
 import static org.testfx.matcher.base.NodeMatchers.isVisible;
 
 /**
- *
+ * Test que prueba la ventana registrar cuando la base de datos esta caída.
+ * Test that tests the window register when the database is down.
  * @author Sergio 
  */
 public class RegistrarseFXMLControllerIT_DB_caido extends ApplicationTest{

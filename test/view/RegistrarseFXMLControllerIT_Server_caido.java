@@ -10,7 +10,8 @@ import org.junit.Test;
 import static org.testfx.matcher.base.NodeMatchers.isVisible;
 
 /**
- *
+ * Test que prueba la ventana registrarse con el servidor caído.
+ * Test that tests the register window with the server down.
  * @author Sergio 
  */
 public class RegistrarseFXMLControllerIT_Server_caido extends ApplicationTest{
