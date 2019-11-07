@@ -32,8 +32,8 @@ public class PrincipalFXControllerIT extends ApplicationTest  {
         clickOn("#menuOpciones");
         clickOn("#menuOpcionesCerrarSesion");
         push(KeyCode.ENTER);
-        //clickOn("#tfContra");
-        //write("123");
+        clickOn("#tfContra");
+        write("123");
         clickOn("#btnAcceder");
         verifyThat("#lblBienvenida",isNotNull());
         verifyThat("#lblEmail",isNotNull());
@@ -62,8 +62,8 @@ public class PrincipalFXControllerIT extends ApplicationTest  {
         push(KeyCode.DOWN);
         push(KeyCode.ENTER);
         push(KeyCode.ENTER);
-        //clickOn("#tfContra");
-        //write("123");
+        clickOn("#tfContra");
+        write("123");
         clickOn("#btnAcceder");
         verifyThat("#lblBienvenida",isNotNull());
         verifyThat("#lblEmail",isNotNull());
