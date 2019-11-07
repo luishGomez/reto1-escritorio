@@ -204,6 +204,7 @@ public class InicioFXController extends ControladorGeneral{
                             ((PrincipalFXController)loader.getController());
                     controller.setUser(user);
                     controller.initStage(root);
+                    tfContra.setText("");
                 }catch(IOException e){
                     showErrorAlert("Error al cargar la ventana de Login.");
                 }

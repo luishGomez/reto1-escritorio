@@ -104,6 +104,7 @@ public class RegistrarseFXMLController{
         lblEmail.setText(EMAIL_MENSAJE_ERROR);
         }else{
             lblEmail.setTextFill(Color.web("black"));
+            lblNombreUsuario.setTextFill(Color.web("black"));
             lblEmail.setText(EMAIL_MENSAJE_DEFAULT);
             try{
                 if(logic.registro(user)){
@@ -115,6 +116,7 @@ public class RegistrarseFXMLController{
                 }
             }catch(LoginIDException e){
                 showErrorAlert("El nombre de usuario ya existe.");
+                lblNombreUsuario.setTextFill(Color.web("red"));
             }catch(DAOException e){
                 showErrorAlert("Ha ocurrido un error en el servidor, intentelo otra vez o vuelva mas tarde.");
             }catch(ServerException e){
@@ -160,16 +162,17 @@ public class RegistrarseFXMLController{
         pswContrasena.setOnKeyPressed(this::keyPressRegistrar);
         pswConfirmarContrasena.textProperty().addListener(this::HandleTextChanged);
         pswConfirmarContrasena.setOnKeyPressed(this::keyPressRegistrar);
+        btnRegistrar2.setOnKeyPressed(this::keyPressRegistrar);
+        btnCancelar.setOnKeyPressed(this::keyPressCancelar);
         //tooltips de ayuda para los botones
         btnCancelar.setTooltip(new Tooltip("Regresar al login"));
-        btnCancelar.setOnKeyPressed(this::keyPressCancelar);
         //textos de ayuda promptext
         txtNombre.setPromptText("ej. Aitor Sanchez");
         txtNombreUsuario.setPromptText("Min. 3 caracteres");
         txtEmail.setPromptText("ej. Aitor_Sanchez@algo.com");
         pswContrasena.setPromptText("Min. 3 caracteres");
         pswConfirmarContrasena.setPromptText("Min. 3 caracteres");
-        btnRegistrar2.setOnKeyPressed(this::keyPressRegistrar);
+        
         //Mostrar ventana
         stage.show();
     }
