@@ -19,13 +19,18 @@
               <MenuItem fx:id="menuOpcionesCerrarSesion" mnemonicParsing="false" onAction="#onActionCerrarSesion" text="Cerrar sesión" />
             </items>
           </Menu>
+          <Menu fx:id="menuAyuda" text="Ayuda" >
+              <items>
+                  <MenuItem fx:id="menuAyudaContenido" mnemonicParsing="false" onAction="#ayuda" text="Contenido de ayuda"/>
+              </items>
+          </Menu>
         </menus>
       </MenuBar>
    </top>
    <left>
       <VBox prefHeight="374.0" prefWidth="222.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox fx:id="vBoxLeft" prefHeight="174.0" prefWidth="129.0">
+            <VBox fx:id="vBoxLeft" prefHeight="174.0" prefWidth="300.0">
                <children>
                   <Label fx:id="lblBienvenida" prefWidth="800" text="Bienvenido &lt;nombre&gt;">
                      <VBox.margin>
