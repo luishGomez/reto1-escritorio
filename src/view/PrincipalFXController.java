@@ -12,6 +12,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.layout.VBox;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -49,6 +55,11 @@ public class PrincipalFXController {
         try{
             LOGGER.info("Iniciando la ventana LogOut");
             Scene scene=new Scene(root);
+            KeyCodeCombination keyAyuda=new KeyCodeCombination(KeyCode.F1);
+            /* Modificacion DIN 13/11/2019 */
+            Runnable mostrarAyuda= () -> ayuda();
+            scene.getAccelerators().put(keyAyuda, mostrarAyuda);
+            /*-FIN-*/
             stage=new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(scene);
@@ -59,6 +70,10 @@ public class PrincipalFXController {
             stage.setOnShowing(this::handleWindowShowing);
             menuOpciones.setMnemonicParsing(true);
             menuOpciones.setText("_Opciones");
+            menuOpcionesSalir.setMnemonicParsing(true);
+            menuOpcionesSalir.setText("_Salir");
+            menuOpcionesCerrarSesion.setMnemonicParsing(true);
+            menuOpcionesCerrarSesion.setText("_Cerrar sesión");
             stage.show();
         }catch(Exception e){
             LOGGER.severe(e.getMessage());
@@ -95,6 +110,8 @@ public class PrincipalFXController {
             //Si acepta cerrara la aplicación.
             alertCerrarAplicacion.showAndWait().ifPresent(response -> {
                 if (response == ButtonType.YES) {
+                    /*Modificaciones DIN 13/11/2019*/
+                    LOGGER.info("Cerrando la aplicación.");
                     Platform.exit();
                 }
             });
@@ -117,6 +134,7 @@ public class PrincipalFXController {
             //Si acepta se cerrara esta ventana.
             alertCerrarSesion.showAndWait().ifPresent(response -> {
                 if (response == ButtonType.OK) {
+                    LOGGER.info("Cerrando sesión.");
                     stage.hide();
                 }
             });
@@ -126,5 +144,13 @@ public class PrincipalFXController {
     }
     public void setUser(User user){
         this.user=user;
+    }
+    /*Modificación DIN 13/1/2019*/
+    public void ayuda(){
+        final WebView browser = new WebView();
+        final WebEngine webEngine = browser.getEngine();
+        webEngine.load("./ayudaPrincipal.html");
+        
+        VBox vBox = new VBox(browser);
     }
 }

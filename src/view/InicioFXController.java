@@ -4,6 +4,7 @@ import businessLogic.*;
 import clases.*;
 import exceptions.*;
 import java.io.IOException;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -31,7 +32,7 @@ import javafx.stage.WindowEvent;
  * @author Luis
  */
 public class InicioFXController extends ControladorGeneral{
-    
+    private static final Logger LOGGER = Logger.getLogger("reto1_escritorio.view.InicioFXController");
     @FXML
     private TextField tfNombreUsuario;
     @FXML
@@ -243,6 +244,7 @@ public class InicioFXController extends ControladorGeneral{
             //Si acepta cerrara la aplicación.
             alertCerrarAplicacion.showAndWait().ifPresent(response -> {
                 if (response == ButtonType.YES) {
+                    LOGGER.info("Cerrando la aplicación.");
                     Platform.exit();
                 }
             });

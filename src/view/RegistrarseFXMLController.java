@@ -129,7 +129,10 @@ public class RegistrarseFXMLController{
         }
     }
     
-    
+    /**
+     * Pasa el usuario a la ventana registro.
+     * @param user Un usuario.
+     */
     public void setUser(User user){
         this.user = user;
     }

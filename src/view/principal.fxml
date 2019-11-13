@@ -27,12 +27,12 @@
          <children>
             <VBox fx:id="vBoxLeft" prefHeight="174.0" prefWidth="129.0">
                <children>
-                  <Label fx:id="lblBienvenida" prefWidth="220" text="Bienvenido &lt;nombre&gt;">
+                  <Label fx:id="lblBienvenida" prefWidth="800" text="Bienvenido &lt;nombre&gt;">
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin>
                   </Label>
-                  <Label fx:id="lblEmail" prefWidth="220" text="&lt;email&gt;" />
+                  <Label fx:id="lblEmail" prefWidth="800" text="&lt;email&gt;" />
                </children>
             </VBox>
          </children></VBox>
