@@ -1,6 +1,14 @@
 package view;
 
+import businessLogic.LogicCliente;
+import businessLogic.LogicFactory;
 import clases.User;
+import exceptions.DAOException;
+import exceptions.EsperaCompletaException;
+import exceptions.LogicException;
+import exceptions.LoginIDException;
+import exceptions.PasswordException;
+import exceptions.ServerException;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -12,9 +20,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import static view.ControladorGeneral.showErrorAlert;
 
 /**
  * Es el controlador de la ventana principal.fxml.
@@ -37,6 +47,7 @@ public class PrincipalFXController {
     private Label lblBienvenida;
     @FXML
     private Label lblEmail;
+    public LogicCliente logic = new LogicFactory().getLogicCliente();
     
     
     /**
@@ -95,6 +106,18 @@ public class PrincipalFXController {
             //Si acepta cerrara la aplicación.
             alertCerrarAplicacion.showAndWait().ifPresent(response -> {
                 if (response == ButtonType.YES) {
+                    try{
+                        logic.finAcceso(user.getLogin());
+                    }catch(DAOException e){
+                        showErrorAlert("Ha ocurrido un error en el servidor, intentelo otra vez o vuelva mas tarde.");
+                    }catch(ServerException e){
+                        showErrorAlert("Problemas con el servidor.");
+                    }catch(LogicException e){
+                        showErrorAlert("Problemas con el servidor, intentelo en un rato.");
+                    }catch(EsperaCompletaException e){
+                        showErrorAlert("El servidor no se encuentra disponible en estos momentos.");
+                    }
+                    
                     Platform.exit();
                 }
             });
@@ -117,6 +140,18 @@ public class PrincipalFXController {
             //Si acepta se cerrara esta ventana.
             alertCerrarSesion.showAndWait().ifPresent(response -> {
                 if (response == ButtonType.OK) {
+                     try{
+                        logic.finAcceso(user.getLogin());
+                    }catch(DAOException e){
+                        showErrorAlert("Ha ocurrido un error en el servidor, intentelo otra vez o vuelva mas tarde.");
+                    }catch(ServerException e){
+                        showErrorAlert("Problemas con el servidor.");
+                    }catch(LogicException e){
+                        showErrorAlert("Problemas con el servidor, intentelo en un rato.");
+                    }catch(EsperaCompletaException e){
+                        showErrorAlert("El servidor no se encuentra disponible en estos momentos.");
+                    }
+                    
                     stage.hide();
                 }
             });
