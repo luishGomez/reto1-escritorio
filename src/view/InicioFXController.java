@@ -49,7 +49,8 @@ public class InicioFXController extends ControladorGeneral{
     
     private Stage stage;
     public LogicCliente logic = new LogicFactory().getLogicCliente();
-    
+    private Boolean errorNombre = false;
+    private Boolean errorContra = false;
     public void setStage(Stage stage) {
         this.stage = stage;
     }
@@ -62,7 +63,7 @@ public class InicioFXController extends ControladorGeneral{
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setOnShowing(this::handleWindowShowing);
-        stage.setTitle("App");
+        stage.setTitle("Sign Up Sign In");
         //Add Listener
         tfNombreUsuario.textProperty().addListener(this::textChanged);
         tfContra.textProperty().addListener(this::textChanged);
@@ -106,6 +107,14 @@ public class InicioFXController extends ControladorGeneral{
     private void textChanged(ObservableValue observable,
             String oldValue,
             String newValue){
+        /* MODIFICACIÓN DIN 13/11/2019 */
+        if(newValue.equals(tfNombreUsuario.getText().trim()) && errorNombre){
+            lblNombreUsuario.setTextFill(Color.web("black"));
+            errorNombre = false;
+        }else if(newValue.equals(tfContra.getText().trim()) && errorContra){
+            lblContra.setTextFill(Color.web("black"));
+            errorContra = false;
+        }
         if(tfNombreUsuario.getText().trim().length() >= MIN_CARACTERES &&
                 tfContra.getText().trim().length() >= MIN_CARACTERES){
             btnAcceder.setDisable(false);
@@ -213,12 +222,21 @@ public class InicioFXController extends ControladorGeneral{
             }
         }catch(PasswordException e){
             showErrorAlert("Contraseña incorrecta.");
+            /* MODIFICACIÓN DIN 13/11/2019*/
+            tfContra.requestFocus();
+            errorContra = true;
+            
             lblContra.setTextFill(Color.web("red"));
-            lblNombreUsuario.setTextFill(Color.web("black"));
         }catch(LoginIDException e){
             showErrorAlert("Nombre de usuario incorrecto.");
-            lblContra.setTextFill(Color.web("red"));
+            
+            /* MODIFICACIÓN DIN 13/11/2019*/
+            tfNombreUsuario.requestFocus();
+            errorNombre = true;
+            errorContra = true;
+            
             lblNombreUsuario.setTextFill(Color.web("red"));
+            lblContra.setTextFill(Color.web("red"));
         }catch(DAOException e){
             showErrorAlert("Ha ocurrido un error en el servidor, intentelo otra vez o vuelva mas tarde.");
         }catch(ServerException e){
