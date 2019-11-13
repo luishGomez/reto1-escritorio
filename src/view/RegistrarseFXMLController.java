@@ -11,7 +11,6 @@ import exceptions.LogicException;
 import exceptions.LoginIDException;
 import exceptions.ServerException;
 import java.util.logging.Logger;
-import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -44,14 +43,14 @@ public class RegistrarseFXMLController{
     private final String EMAIL_MENSAJE_DEFAULT="Email";
     private final String EMAIL_MENSAJE_ERROR="EMAIL ERRONEO";
     private final String CONTRASENA_MENSAJE_ERROR="CONTRASEÑAS ERRONEAS";
-
+    
+    /* MODIFICACION DIN fecha: 13/11/2019 */
+    private final String MINIMO_CARACTERES = "Minimo 3 caracteres.";
 
     private Stage stage;
     private User user=new User();
-    
     private LogicCliente logic = new LogicFactory().getLogicCliente();
-    
-    Tooltip tooltip = new Tooltip();
+    Tooltip tooltip = new Tooltip(MINIMO_CARACTERES);
     @FXML
     private TextField txtNombre;
     @FXML
@@ -101,7 +100,10 @@ public class RegistrarseFXMLController{
         
         if(!esEmail(txtEmail.getText().trim())){
             lblEmail.setTextFill(Color.web("red"));
-        lblEmail.setText(EMAIL_MENSAJE_ERROR);
+            lblEmail.setText(EMAIL_MENSAJE_ERROR);
+            
+            /* MODIFICACION DIN fecha: 13/11/2019 */
+            txtEmail.requestFocus();
         }else{
             lblEmail.setTextFill(Color.web("black"));
             lblNombreUsuario.setTextFill(Color.web("black"));
@@ -117,6 +119,8 @@ public class RegistrarseFXMLController{
             }catch(LoginIDException e){
                 showErrorAlert("El nombre de usuario ya existe.");
                 lblNombreUsuario.setTextFill(Color.web("red"));
+                /* MODIFICACION DIN fecha: 13/11/2019 */
+                txtNombreUsuario.requestFocus();
             }catch(DAOException e){
                 showErrorAlert("Ha ocurrido un error en el servidor, intentelo otra vez o vuelva mas tarde.");
             }catch(ServerException e){
@@ -129,10 +133,6 @@ public class RegistrarseFXMLController{
         }
     }
     
-    
-    public void setUser(User user){
-        this.user = user;
-    }
     /**
      * Función que muestra nuestra escena en el stage.
      * Function that shows our scene in the stage.
@@ -166,6 +166,12 @@ public class RegistrarseFXMLController{
         btnCancelar.setOnKeyPressed(this::keyPressCancelar);
         //tooltips de ayuda para los botones
         btnCancelar.setTooltip(new Tooltip("Regresar al login"));
+        
+        /* MODIFICACION DIN fecha: 13/11/2019 */
+        pswContrasena.setTooltip(tooltip);
+        pswConfirmarContrasena.setTooltip(tooltip);
+        txtNombreUsuario.setTooltip(tooltip);
+
         //textos de ayuda promptext
         txtNombre.setPromptText("ej. Aitor Sanchez");
         txtNombreUsuario.setPromptText("Min. 3 caracteres");
@@ -197,18 +203,29 @@ public class RegistrarseFXMLController{
         //comprobacion de Nombre completo su caracteres maximos.
         if(txtNombre.getText().length()>40 && txtNombre.isFocused()){
             LOGGER.info("El nombre tiene exceso de caracteres");
-            //txtNombre.setText(newValue);
             txtNombre.setText(newValue.trim().substring(0,40));
         }
         //comprobacion de Nombre de usuario usuario caracteres maximos.
-        if(txtNombreUsuario.getText().length()>15 && txtNombreUsuario.isFocused()){
-            LOGGER.info("El nombre de usuario tiene exceso de caracteres");
-            txtNombreUsuario.setText(newValue.trim().substring(0,15));
+        if(txtNombreUsuario.isFocused()){
+            if(txtNombreUsuario.getText().length()>15){
+                LOGGER.info("El nombre de usuario tiene exceso de caracteres");
+                txtNombreUsuario.setText(newValue.trim().substring(0,15));
+            }
+              /* MODIFICACION DIN fecha: 13/11/2019 */
+                if(!newValue.equals(oldValue))
+                    lblNombreUsuario.setTextFill(Color.web("black"));
+                
         }
         //comprobacion de Email usuario caracteres maximos.
         if(txtEmail.isFocused()){
             if(txtEmail.getText().length()>40)
                 txtEmail.setText(newValue.trim().substring(0,40));
+            
+            /* MODIFICACION DIN fecha: 13/11/2019 */
+            if(!newValue.equals(oldValue)){
+                lblEmail.setTextFill(Color.web("black"));
+                lblEmail.setText(EMAIL_MENSAJE_DEFAULT);
+            }
         }
         //Comprobacion de contrasena caracteres maximos.
         if(pswContrasena.getText().length()>15 && pswContrasena.isFocused())
@@ -221,6 +238,7 @@ public class RegistrarseFXMLController{
                 && !pswConfirmarContrasena.getText().trim().isEmpty()
                 && passwordsCorrect(pswContrasena.getText().trim(),pswConfirmarContrasena.getText().trim())){
             lblConfirmarContrasena.setTextFill(Color.web("black"));
+            lblConfirmarContrasena.setText(CONTRASENA_MENSAJE_DEFAULT);
             btnRegistrar2.setDisable(false);
         }else{
             if(!passwordsCorrect(pswContrasena.getText().trim(),pswConfirmarContrasena.getText().trim()) && pswConfirmarContrasena.getText().trim().length()>=3 && pswContrasena.getText().trim().length()>=3){
