@@ -4,11 +4,13 @@ import businessLogic.*;
 import clases.*;
 import exceptions.*;
 import java.io.IOException;
+import java.net.URL;
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -20,8 +22,15 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.Mnemonic;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -31,26 +40,98 @@ import javafx.stage.WindowEvent;
  * @author Luis
  */
 public class InicioFXController extends ControladorGeneral{
-    
+    /* MODIFICACIÓN DIN 14/11/2019 */
+    /**
+     * Botón Ayuda.
+     * Ayuda button.
+     */
+    @FXML
+    private Button btnAyuda;
+    /**
+     * Campo de texto Nombre de usuario.
+     * Nombre de usuario text field.
+     */
     @FXML
     private TextField tfNombreUsuario;
+    /**
+     * Campo de contraseña Contraseña.
+     * Contraseña password field.
+     */
     @FXML
     private PasswordField tfContra;
+    /**
+     * Botón Registrar.
+     * Registrar button.
+     */
     @FXML
     private Button btnRegistrar;
+    /**
+     * Botón Acceder.
+     * Acceder button.
+     */
     @FXML
     private Button btnAcceder;
+    /**
+     * Botón Salir.
+     * Salir button.
+     */
     @FXML
     private Button btnSalir;
+    /**
+     * Etiqueta Nombre de usuario.
+     * Nombre de usuario label.
+     */
     @FXML
     private Label lblNombreUsuario;
+    /**
+     * Etiqueta Contraseña.
+     * Contraseña label.
+     */
     @FXML
     private Label lblContra;
-    
+    /**
+     * Ventana que se muestra.
+     * Window to show.
+     */
     private Stage stage;
+    
+    /* MODIFICACIÓN DIN 14/11/2019 */
+    /**
+     * Ventana de ayuda.
+     * Window help.
+     */
+    private Stage helpStage = new Stage();
+    
+    /**
+     * Muestra mensajes en el log de la aplicación.
+     * Show message in the aplication log.
+     */
     public LogicCliente logic = new LogicFactory().getLogicCliente();
+    /**
+     * Variable para controlar los errores de Nombre de usuario.
+     * Variable to control Nombre de usuario error.
+     */
     private Boolean errorNombre = false;
+    /**
+     * Variable para controlar los errores de Contraseña.
+     * Variable to control Contraseña error.
+     */
     private Boolean errorContra = false;
+    
+    /* MODIFICACIÓN DIN 14/11/2019 */
+    /**
+     * Constructor vacio.
+     * Void constructor.
+     */
+    public InicioFXController(){
+        
+    }
+    
+    /**
+     * Da valor al stage.
+     * Set value to stage.
+     * @param stage 
+     */
     public void setStage(Stage stage) {
         this.stage = stage;
     }
@@ -75,6 +156,19 @@ public class InicioFXController extends ControladorGeneral{
         btnAcceder.setOnKeyPressed(this::keyPressLogin);
         btnSalir.setOnAction(this::btnSalirOnClick);
         btnSalir.setOnKeyPressed(this::keyPressSalir);
+        /* MODIFICACIÓN DIN 14/11/2019*/
+        KeyCombination keyCombination = new KeyCodeCombination(KeyCode.F1);
+        Runnable run = ()-> btnAyuda.fire();
+        scene.getAccelerators().put(keyCombination, run);
+        btnAyuda.setOnAction(this::btnAyudaOnClick);
+        btnRegistrar.setMnemonicParsing(true);
+        btnRegistrar.setText("_Registrar");
+        btnAcceder.setMnemonicParsing(true);
+        btnAcceder.setText("_Acceder");
+        btnSalir.setMnemonicParsing(true);
+        btnSalir.setText("_Salir");
+        tfNombreUsuario.focusedProperty().addListener(this::focusChangedNombre);
+        tfContra.focusedProperty().addListener(this::focusChangedContra);
         stage.show();
     }
     /**
@@ -88,21 +182,28 @@ public class InicioFXController extends ControladorGeneral{
         //El foco estará en el campo Nombre de usuario.
         tfNombreUsuario.requestFocus();
         //PromtText
-        tfContra.setPromptText("Introduzca la contraseña");
         tfNombreUsuario.setPromptText("Introduzca el nombre de usuario");
+        tfContra.setPromptText("Introduzca la contraseña");
         //Tooltips
         btnRegistrar.setTooltip(
                 new Tooltip("Pulse para abrir formulario de registro."));
         btnAcceder.setTooltip(new Tooltip("Pulse para iniciar sesión."));
+        /* MODIFICACIÓN DIN 14/11/2019*/
+        tfNombreUsuario.setTooltip(new Tooltip("Requisitos:\n-Mínimo caracteres: "
+                +MIN_CARACTERES+"\n-Máximo caracteres: "+MAX_CARACTERES));
+        tfContra.setTooltip(new Tooltip("Requisitos:\n-Mínimo caracteres: "
+                +MIN_CARACTERES+"\n-Máximo caracteres: "+MAX_CARACTERES));
+        btnSalir.setTooltip(
+                new Tooltip("Pulse para salir de la aplicación."));
         //La ventana no puede cambiar de tamaño.
         stage.setResizable(false);
     }
     /**
      * Comprueba que los controladores label estén bien informados.
      * Check that label controllers are well informed.
-     * @param observable
-     * @param oldValue
-     * @param newValue
+     * @param observable 
+     * @param oldValue Valor antiguo. / Old value.
+     * @param newValue Valor nuevo. / New value.
      */
     private void textChanged(ObservableValue observable,
             String oldValue,
@@ -111,7 +212,8 @@ public class InicioFXController extends ControladorGeneral{
         if(newValue.equals(tfNombreUsuario.getText().trim()) && errorNombre){
             lblNombreUsuario.setTextFill(Color.web("black"));
             errorNombre = false;
-        }else if(newValue.equals(tfContra.getText().trim()) && errorContra){
+        }
+        if(newValue.equals(tfContra.getText().trim()) && errorContra){
             lblContra.setTextFill(Color.web("black"));
             errorContra = false;
         }
@@ -136,7 +238,7 @@ public class InicioFXController extends ControladorGeneral{
     /**
      * Atajo para iniciar sesión.
      * Shortcut to log in.
-     * @param key 
+     * @param key Tecla pulsada. / Key press.
      */
     private void keyPressLogin(KeyEvent key){
         if(key.getCode().equals(KeyCode.ENTER)) {
@@ -148,7 +250,7 @@ public class InicioFXController extends ControladorGeneral{
     /**
      * Atajo para registrase.
      * Shortcut to sign up.
-     * @param key 
+     * @param key Tecla pulsada. / Key press.
      */
     private void keyPressRegistrar(KeyEvent key){
         if(key.getCode().equals(KeyCode.ENTER)) {
@@ -160,7 +262,7 @@ public class InicioFXController extends ControladorGeneral{
     /**
      * Atajo para salir de la aplicación.
      * Shortcut to exit from the application.
-     * @param key 
+     * @param key Tecla pulsada. / Key press.
      */
     private void keyPressSalir(KeyEvent key){
         if(key.getCode().equals(KeyCode.ENTER)) {
@@ -175,7 +277,6 @@ public class InicioFXController extends ControladorGeneral{
      * @param event El propio evento. / The current event.
      */
     private void btnRegistrarOnClick(ActionEvent event) {
-        
         try {
         FXMLLoader loader = new FXMLLoader(getClass()
         .getResource("Registrarse.fxml"));
@@ -222,6 +323,7 @@ public class InicioFXController extends ControladorGeneral{
             }
         }catch(PasswordException e){
             showErrorAlert("Contraseña incorrecta.");
+            
             /* MODIFICACIÓN DIN 13/11/2019*/
             tfContra.requestFocus();
             errorContra = true;
@@ -264,5 +366,65 @@ public class InicioFXController extends ControladorGeneral{
                     Platform.exit();
                 }
             });
+    }
+    
+    /* MODIFICACIÓN DIN 14/11/2019*/
+    /**
+     * Muestra la ventana de ayuda.
+     * Show help window.
+     * @param event El propio evento. / The current event.
+     */
+    public void btnAyudaOnClick(ActionEvent event){
+        WebView browser = new WebView();
+        WebEngine webEngine = browser.getEngine();
+        
+        URL url = this.getClass().getResource("ayuda.html");
+        webEngine.load(url.toString());
+        helpStage.setTitle(webEngine.getTitle());
+        
+        Button btnCerrarHelp=new Button("Cerrar");        
+        btnCerrarHelp.setOnAction(this::btnCerrarHelpOnAction);
+
+        VBox root = new VBox();
+        root.getChildren().addAll(browser,btnCerrarHelp);
+        
+        Scene helpScene = new Scene(root);
+        helpStage.setScene(helpScene);
+        
+        helpStage.show();
+    }
+    /**
+     * Comprueba el cambio de foco del campo de texto Nombre de usuario.
+     * Check Nombre de usuario text field focus changed.
+     * @param arg0
+     * @param oldValue Valor antiguo. / Old value.
+     * @param newValue Valor nuevo. / New value.
+     */
+    public void focusChangedNombre(ObservableValue arg0, Boolean oldValue, Boolean newValue){
+        if(!newValue && tfNombreUsuario.getText().trim().length() < MIN_CARACTERES){
+            lblNombreUsuario.setTextFill(Color.web("red"));
+            errorNombre = true;
+        }
+    }
+    /**
+     * Comprueba el cambio de foco del campo de contraseña Contraseña.
+     * Check Contraseña password field focus changed.
+     * @param arg0
+     * @param oldValue Valor antiguo. / Old value.
+     * @param newValue Valor nuevo. / New value.
+     */
+    public void focusChangedContra(ObservableValue arg0, Boolean oldValue, Boolean newValue){
+        if(!newValue && tfContra.getText().trim().length() < MIN_CARACTERES){
+            lblContra.setTextFill(Color.web("red"));
+            errorContra = true;
+        }
+    }
+    /**
+     * Cierra la ventana de ayuda.
+     * Close help window.
+     * @param El propio evento. / The current event. 
+     */
+    public void btnCerrarHelpOnAction(ActionEvent event){
+        helpStage.hide();
     }
 }
