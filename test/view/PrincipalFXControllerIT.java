@@ -8,11 +8,8 @@ import static org.testfx.api.FxAssert.verifyThat;
 import org.testfx.framework.junit.ApplicationTest;
 import static org.testfx.matcher.base.NodeMatchers.isDisabled;
 import static org.testfx.matcher.base.NodeMatchers.isEnabled;
-import static org.testfx.matcher.base.NodeMatchers.isInvisible;
 import static org.testfx.matcher.base.NodeMatchers.isNotNull;
 import static org.testfx.matcher.base.NodeMatchers.isNull;
-import static org.testfx.matcher.base.NodeMatchers.isVisible;
-import static org.testfx.matcher.control.LabeledMatchers.hasText;
 /**
  * Test que comprueba que el la ventana principal funcione bien.
  * Test that checks that the principal window works well.
@@ -51,6 +48,7 @@ public class PrincipalFXControllerIT extends ApplicationTest  {
         /*Comprueba que se a cerrado la ventana principal y a vuelto a inicio*/
         verifyThat("#btnAcceder",isDisabled());
         verifyThat("#lblBienvenida",isNull());
+        /* -FIN- */
         
         
         
@@ -76,6 +74,7 @@ public class PrincipalFXControllerIT extends ApplicationTest  {
         /*Comprueba que se a cerrado la ventana principal y a vuelto a inicio*/
         verifyThat("#btnAcceder",isDisabled());
         verifyThat("#lblBienvenida",isNull());
+        /* -FIN- */
         clickOn("#tfContra");
         write("123");
         clickOn("#btnAcceder");
