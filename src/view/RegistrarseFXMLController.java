@@ -1,7 +1,5 @@
 package view;
 
-
-
 import businessLogic.LogicCliente;
 import businessLogic.LogicFactory;
 import clases.*;
@@ -25,12 +23,18 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.web.WebEngine;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import static view.ControladorGeneral.showErrorAlert;
+
+
+import javafx.scene.web.WebView;
 
 /**
  * El controlador de la ventana RegistrarseFX para registrar nuevo usuario.
@@ -43,14 +47,17 @@ public class RegistrarseFXMLController{
     private final String EMAIL_MENSAJE_DEFAULT="Email";
     private final String EMAIL_MENSAJE_ERROR="EMAIL ERRONEO";
     private final String CONTRASENA_MENSAJE_ERROR="CONTRASEÑAS ERRONEAS";
-    
     /* MODIFICACION DIN fecha: 13/11/2019 */
     private final String MINIMO_CARACTERES = "Minimo 3 caracteres.";
+    /* MODIFICACION DIN fecha: 14/11/2019 */
+    private final String RUTA_AYUDA = getClass().getResource("/view/ayuda.html").toExternalForm();
 
     private Stage stage;
     private User user=new User();
     private LogicCliente logic = new LogicFactory().getLogicCliente();
     Tooltip tooltip = new Tooltip(MINIMO_CARACTERES);
+    
+    
     @FXML
     private TextField txtNombre;
     @FXML
@@ -75,6 +82,8 @@ public class RegistrarseFXMLController{
     private Label lblContrasena;
     @FXML
     private Label lblConfirmarContrasena;
+    @FXML
+    private Button btnAyuda;
     
     /**
      * Retorna a la ventana anterior.
@@ -164,6 +173,8 @@ public class RegistrarseFXMLController{
         pswConfirmarContrasena.setOnKeyPressed(this::keyPressRegistrar);
         btnRegistrar2.setOnKeyPressed(this::keyPressRegistrar);
         btnCancelar.setOnKeyPressed(this::keyPressCancelar);
+        /* MODIFICACION DIN fecha: 14/11/2019 */
+        btnAyuda.setOnKeyPressed(this::keyPressAyuda);
         //tooltips de ayuda para los botones
         btnCancelar.setTooltip(new Tooltip("Regresar al login"));
         
@@ -179,8 +190,34 @@ public class RegistrarseFXMLController{
         pswContrasena.setPromptText("Min. 3 caracteres");
         pswConfirmarContrasena.setPromptText("Min. 3 caracteres");
         
+        /* MODIFICACION DIN fecha: 14/11/2019 */
+        scene.getAccelerators().put(new KeyCodeCombination(KeyCode.F1),btnAyuda::fire);
         //Mostrar ventana
         stage.show();
+    }
+    /* MODIFICACION DIN fecha: 14/11/2019 */
+    @FXML
+    private void btnAyuda(ActionEvent event){
+        LOGGER.info(RUTA_AYUDA);
+        ayuda();
+    }
+    public void ayuda(){
+         Stage stageAyuda = new Stage();
+         WebView webView = new WebView();
+        final WebEngine webEngine = webView.getEngine();
+        webEngine.load(RUTA_AYUDA);
+        VBox root = new VBox();
+        root.getChildren().add(webView);
+        Scene scene = new Scene(root);
+        stageAyuda.setScene(scene);
+        stageAyuda.setTitle("Ventana de ayuda");
+        stageAyuda.setResizable(false);
+        stageAyuda.initModality(Modality.APPLICATION_MODAL);
+        stageAyuda.show();
+    }
+    private void keyPressAyuda(KeyEvent key){
+        if(key.getCode().equals(KeyCode.ENTER))
+            btnAyuda.fire();
     }
     /**
      * Configuración del inicio de la ventana.
