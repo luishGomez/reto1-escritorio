@@ -51,8 +51,14 @@ public class PrincipalFXController {
     private Label lblBienvenida;
     @FXML
     private Label lblEmail;
-    
-    
+    /*Modificación DIN 13/1/2019*/
+    /**
+     * El constructor de la clase PrincipalFXController.
+     * The PrincipalFXController constructor.
+     */
+    public PrincipalFXController() {
+    }
+        
     /**
      * Función que muestra nuestra escena en el stage.
      * Function that shows our scene in the stage.
