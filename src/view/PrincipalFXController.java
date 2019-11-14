@@ -175,7 +175,7 @@ public class PrincipalFXController {
         final WebView browser = new WebView();
         final WebEngine webEngine = browser.getEngine();
         
-        URL url = this.getClass().getResource("./ayudaPrincipal.html");
+        URL url = this.getClass().getResource("ayudaPrincipal.html");
         webEngine.load(url.toString());
         
         stageAyuda=new Stage();
