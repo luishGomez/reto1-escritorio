@@ -165,6 +165,10 @@ public class PrincipalFXController {
         this.user=user;
     }
     /*Modificación DIN 13/1/2019*/
+    /**
+     * Crea y muestra la ventana de ayuda gracias a cargar un html.
+     * Create and shows the help window that it was load from one html.
+     */
     @FXML
     public void ayuda(){
         LOGGER.info("algo");
@@ -200,6 +204,11 @@ public class PrincipalFXController {
         
         stageAyuda.show();
     }
+    /**
+     * Cierra la ventana de ayuda.
+     * Close the help window.
+     * @param event El propio evento.
+     */
     public void cerrarAyuda(ActionEvent event){
         stageAyuda.hide();
     }
