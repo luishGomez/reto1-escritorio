@@ -4,8 +4,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
 /**
- * Controlador de máximo y mínimos de caracteres de los campos a rellenar.
- * Controller of maximum and minimum characters of the fields to be filled.
+ * Controlador con constantes y funciones genericas.
+ * Controller with constant and generic functions.
  * @author Luis
  */
 public class ControladorGeneral {

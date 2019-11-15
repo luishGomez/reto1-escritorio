@@ -130,7 +130,7 @@ public class InicioFXController extends ControladorGeneral{
     /**
      * Da valor al stage.
      * Set value to stage.
-     * @param stage 
+     * @param stage Nuevo valor. / New value.
      */
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -245,6 +245,8 @@ public class InicioFXController extends ControladorGeneral{
             btnAcceder.fire();
         }else if(key.getCode().equals(KeyCode.ESCAPE)){
             btnSalir.fire();
+        }else if(key.getCode().equals(KeyCode.F1)){
+            btnAyuda.fire();
         }
     }
     /**
@@ -422,7 +424,7 @@ public class InicioFXController extends ControladorGeneral{
     /**
      * Cierra la ventana de ayuda.
      * Close help window.
-     * @param El propio evento. / The current event. 
+     * @param event propio evento. / The current event. 
      */
     public void btnCerrarHelpOnAction(ActionEvent event){
         helpStage.hide();
