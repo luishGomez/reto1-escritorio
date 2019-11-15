@@ -20,6 +20,6 @@
       <Label fx:id="lblNombreUsuario" layoutX="372.0" layoutY="113.0" prefHeight="17.0" prefWidth="149.0" text="Nombre de usuario" />
       <Label fx:id="lblContrasena" layoutX="370.0" layoutY="179.0" prefHeight="17.0" prefWidth="149.0" text="Contraseña" />
       <Label fx:id="lblConfirmarContrasena" layoutX="370.0" layoutY="234.0" prefHeight="17.0" prefWidth="149.0" text="Confirmar contraseña" />
-      <Button fx:id="btnAyuda" layoutX="262.0" layoutY="351.0" mnemonicParsing="false" onAction="#btnAyuda" prefHeight="25.0" prefWidth="90.0" style="-fx-background-image: red;" text="Ayuda" textFill="#431b1b" />
+      <Button fx:id="btnAyuda" layoutX="549.0" layoutY="14.0" mnemonicParsing="false" onAction="#btnAyuda" prefHeight="32.0" prefWidth="32.0" textFill="#431b1b" />
    </children>
 </Pane>

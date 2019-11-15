@@ -22,8 +22,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -51,7 +54,7 @@ public class RegistrarseFXMLController{
     private final String MINIMO_CARACTERES = "Minimo 3 caracteres.";
     /* MODIFICACION DIN fecha: 14/11/2019 */
     private final String RUTA_AYUDA = getClass().getResource("/view/ayuda.html").toExternalForm();
-
+    /*--------------------fin--------------------------*/
     private Stage stage;
     private User user=new User();
     private LogicCliente logic = new LogicFactory().getLogicCliente();
@@ -113,6 +116,7 @@ public class RegistrarseFXMLController{
             
             /* MODIFICACION DIN fecha: 13/11/2019 */
             txtEmail.requestFocus();
+            /*--------------------fin--------------------------*/
         }else{
             lblEmail.setTextFill(Color.web("black"));
             lblNombreUsuario.setTextFill(Color.web("black"));
@@ -130,6 +134,7 @@ public class RegistrarseFXMLController{
                 lblNombreUsuario.setTextFill(Color.web("red"));
                 /* MODIFICACION DIN fecha: 13/11/2019 */
                 txtNombreUsuario.requestFocus();
+                /*--------------------fin--------------------------*/
             }catch(DAOException e){
                 showErrorAlert("Ha ocurrido un error en el servidor, intentelo otra vez o vuelva mas tarde.");
             }catch(ServerException e){
@@ -173,16 +178,20 @@ public class RegistrarseFXMLController{
         pswConfirmarContrasena.setOnKeyPressed(this::keyPressRegistrar);
         btnRegistrar2.setOnKeyPressed(this::keyPressRegistrar);
         btnCancelar.setOnKeyPressed(this::keyPressCancelar);
-        /* MODIFICACION DIN fecha: 14/11/2019 */
+        /* MODIFICACION DIN fecha: 15/11/2019 */
+        Image image = new Image(getClass().getResourceAsStream("help.png"),32,32,false,false);
+        btnAyuda.setGraphic(new ImageView(image));
+        /*--------------------fin--------------------------*/
+        /* MODIFICACION DIN fecha: 15/11/2019 */
         btnAyuda.setOnKeyPressed(this::keyPressAyuda);
         //tooltips de ayuda para los botones
         btnCancelar.setTooltip(new Tooltip("Regresar al login"));
-        
         /* MODIFICACION DIN fecha: 13/11/2019 */
         pswContrasena.setTooltip(tooltip);
         pswConfirmarContrasena.setTooltip(tooltip);
         txtNombreUsuario.setTooltip(tooltip);
-
+        btnAyuda.setTooltip(new Tooltip("Ventana de ayuda"));
+        /*--------------------fin--------------------------*/
         //textos de ayuda promptext
         txtNombre.setPromptText("ej. Aitor Sanchez");
         txtNombreUsuario.setPromptText("Min. 3 caracteres");
@@ -191,16 +200,19 @@ public class RegistrarseFXMLController{
         pswConfirmarContrasena.setPromptText("Min. 3 caracteres");
         
         /* MODIFICACION DIN fecha: 14/11/2019 */
-        scene.getAccelerators().put(new KeyCodeCombination(KeyCode.F1),btnAyuda::fire);
+        scene.getAccelerators().put(new  KeyCodeCombination(KeyCode.F1,KeyCombination.CONTROL_DOWN),this::ayuda);
+        /*--------------------fin--------------------------*/
         //Mostrar ventana
         stage.show();
     }
     /* MODIFICACION DIN fecha: 14/11/2019 */
     @FXML
     private void btnAyuda(ActionEvent event){
-        LOGGER.info(RUTA_AYUDA);
         ayuda();
     }
+    /**
+     * Crea y muestra la ventana ayuda.
+     */
     public void ayuda(){
          Stage stageAyuda = new Stage();
          WebView webView = new WebView();
@@ -215,6 +227,11 @@ public class RegistrarseFXMLController{
         stageAyuda.initModality(Modality.APPLICATION_MODAL);
         stageAyuda.show();
     }
+    /*--------------------fin--------------------------*/
+    /**
+     * Controlador de boton ayuda en caso de ser pulsado.
+     * @param key letra pulsada
+     */
     private void keyPressAyuda(KeyEvent key){
         if(key.getCode().equals(KeyCode.ENTER))
             btnAyuda.fire();
@@ -251,6 +268,7 @@ public class RegistrarseFXMLController{
               /* MODIFICACION DIN fecha: 13/11/2019 */
                 if(!newValue.equals(oldValue))
                     lblNombreUsuario.setTextFill(Color.web("black"));
+              /*--------------------fin--------------------------*/
                 
         }
         //comprobacion de Email usuario caracteres maximos.
@@ -263,6 +281,7 @@ public class RegistrarseFXMLController{
                 lblEmail.setTextFill(Color.web("black"));
                 lblEmail.setText(EMAIL_MENSAJE_DEFAULT);
             }
+            /*--------------------fin--------------------------*/
         }
         //Comprobacion de contrasena caracteres maximos.
         if(pswContrasena.getText().length()>15 && pswContrasena.isFocused())
@@ -438,5 +457,4 @@ public class RegistrarseFXMLController{
         }
     }
 }
-
 
